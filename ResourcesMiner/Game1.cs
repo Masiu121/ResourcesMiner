@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace ResourcesMiner
 {
@@ -8,6 +9,8 @@ namespace ResourcesMiner
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private const int TileWidth = 64;
+        private Rectangle _tile;
 
         private Vector2 _minerPos;
         
@@ -35,7 +38,7 @@ namespace ResourcesMiner
 
         protected override void Initialize()
         {
-            
+            _tile = new Rectangle(Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y), TileWidth, TileWidth);
 
             base.Initialize();
         }
@@ -56,7 +59,25 @@ namespace ResourcesMiner
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            {
+                _minerPos.X -= 5;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            {
+                _minerPos.X += 5;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            {
+                _minerPos.Y -= 5;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+                _minerPos.Y += 5;
+            }
+
+            _tile.X = Convert.ToInt32(_minerPos.X);
+            _tile.Y = Convert.ToInt32(_minerPos.Y);
 
             base.Update(gameTime);
         }
@@ -65,7 +86,12 @@ namespace ResourcesMiner
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
+            
+            //Drawing miner
+            _spriteBatch.Draw(_drillBase, _tile, Color.White);
+            _spriteBatch.Draw(_chassisBase, _tile, Color.White);
+            _spriteBatch.Draw(_bodyBase, _tile, Color.White);
             
             _spriteBatch.End();
 
