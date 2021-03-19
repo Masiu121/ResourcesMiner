@@ -9,6 +9,23 @@ namespace ResourcesMiner
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        private Vector2 _minerPos;
+        
+        //Miner tiers
+        private int _drillTier;
+        private int _chassisTier;
+        private int _bodyTier;
+        
+        //Base textures
+        private Texture2D _drillBase;
+        private Texture2D _chassisBase;
+        private Texture2D _bodyBase;
+        
+        //Tiers textures
+        private Texture2D _drillTier1;
+        private Texture2D _chassisTier1;
+        private Texture2D _bodyTier1;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -18,7 +35,7 @@ namespace ResourcesMiner
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            
 
             base.Initialize();
         }
@@ -27,7 +44,10 @@ namespace ResourcesMiner
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            _drillTier1 = Content.Load<Texture2D>("drillTier1");
+            _chassisTier1 = Content.Load<Texture2D>("chassisTier1");
+            _bodyTier1 = Content.Load<Texture2D>("bodyTier1");
+            applyTextures();
         }
 
         protected override void Update(GameTime gameTime)
@@ -45,9 +65,62 @@ namespace ResourcesMiner
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+            
+            _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private void applyTextures()
+        {
+            //Drill
+            switch (_drillTier)
+            {
+                case 0:
+                    _drillBase = _drillTier1;
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+            }
+            
+            //Chassis
+            switch (_chassisTier)
+            {
+                case 0:
+                    _chassisBase = _chassisTier1;
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+            }
+            
+            //Body
+            switch (_bodyTier)
+            {
+                case 0:
+                    _bodyBase = _bodyTier1;
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+            }
         }
     }
 }
