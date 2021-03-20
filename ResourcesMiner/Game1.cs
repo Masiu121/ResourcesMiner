@@ -11,6 +11,8 @@ namespace ResourcesMiner
         private SpriteBatch _spriteBatch;
         private const int TileWidth = 64;
         private Rectangle _tile;
+        private bool _canMove = true;
+        private int _canMoveTill;
 
         private Vector2 _minerPos;
         private const int MapWidth = 64;
@@ -66,7 +68,7 @@ namespace ResourcesMiner
         {
             _tile = new Rectangle(Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y), TileWidth, TileWidth);
             _map = new int[MapWidth, MapWidth];
-            GenerateMap();
+            //GenerateMap();
             _drillTier = 0;
             _chassisTier = 0;
             _bodyTier = 0;
@@ -108,19 +110,47 @@ namespace ResourcesMiner
 
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                _minerPos.X -= 5;
+                if (_canMove)
+                {
+                    _minerPos.X -= 10;
+                    _canMove = false;
+                }
+
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                _minerPos.X += 5;
+                if (_canMove)
+                {
+                    _minerPos.X += 10;
+                    _canMove = false;
+                }
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                _minerPos.Y -= 5;
+                if (_canMove)
+                {
+                    _minerPos.Y -= 10;
+                    _canMove = false;
+                }
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                _minerPos.Y += 5;
+                if (_canMove)
+                {
+                    _minerPos.Y += 10;
+                    _canMove = false;
+                }
+            }
+
+            if (!_canMove)
+            {
+                if (_canMoveTill < 50)
+                    _canMoveTill++;
+                else
+                {
+                    _canMove = true;
+                    _canMoveTill = 0;
+                }
             }
 
             _tile.X = Convert.ToInt32(_minerPos.X);
