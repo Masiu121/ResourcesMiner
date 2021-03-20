@@ -13,6 +13,20 @@ namespace ResourcesMiner
         private Rectangle _tile;
 
         private Vector2 _minerPos;
+        private const int MapWidth = 64;
+        
+        /* 0 - void
+         * 1 - grass
+         * 2 - dirt
+         * 3 - coal ore
+         * 4 - copper ore
+         * 5 - iron ore
+         * 6 - apatite ore
+         * 7 - diamond ore
+         * 8 - emerald ore
+         */
+        private int[,] _map;
+        
         
         //Miner tiers
         private int _drillTier;
@@ -51,6 +65,8 @@ namespace ResourcesMiner
         protected override void Initialize()
         {
             _tile = new Rectangle(Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y), TileWidth, TileWidth);
+            _map = new int[MapWidth, MapWidth];
+            GenerateMap();
             _drillTier = 0;
             _chassisTier = 0;
             _bodyTier = 0;
@@ -189,6 +205,20 @@ namespace ResourcesMiner
                 case 4:
                     _bodyBase = _bodyTier5;
                     break;
+            }
+        }
+
+        private void GenerateMap()
+        {
+            for (int i = 0; i < MapWidth; i++)
+            {
+                for (int j = 0; j < MapWidth; i++)
+                {
+                    if (j != 0)
+                    {
+                        _map[i, j] = 1;
+                    }
+                }
             }
         }
     }
