@@ -112,7 +112,7 @@ namespace ResourcesMiner
             {
                 if (_canMove)
                 {
-                    _minerPos.X -= 10;
+                    _minerPos.X -= 1;
                     _canMove = false;
                 }
 
@@ -121,7 +121,7 @@ namespace ResourcesMiner
             {
                 if (_canMove)
                 {
-                    _minerPos.X += 10;
+                    _minerPos.X += 1;
                     _canMove = false;
                 }
             }
@@ -129,7 +129,7 @@ namespace ResourcesMiner
             {
                 if (_canMove)
                 {
-                    _minerPos.Y -= 10;
+                    _minerPos.Y -= 1;
                     _canMove = false;
                 }
             }
@@ -137,14 +137,14 @@ namespace ResourcesMiner
             {
                 if (_canMove)
                 {
-                    _minerPos.Y += 10;
+                    _minerPos.Y += 1;
                     _canMove = false;
                 }
             }
 
             if (!_canMove)
             {
-                if (_canMoveTill < 50)
+                if (_canMoveTill < 35)
                     _canMoveTill++;
                 else
                 {
@@ -153,8 +153,8 @@ namespace ResourcesMiner
                 }
             }
 
-            _tile.X = Convert.ToInt32(_minerPos.X);
-            _tile.Y = Convert.ToInt32(_minerPos.Y);
+            _tile.X = Convert.ToInt32(_minerPos.X*TileWidth);
+            _tile.Y = Convert.ToInt32(_minerPos.Y*TileWidth);
 
             base.Update(gameTime);
         }
@@ -169,6 +169,8 @@ namespace ResourcesMiner
             _spriteBatch.Draw(_drillBase, _tile, Color.White);
             _spriteBatch.Draw(_chassisBase, _tile, Color.White);
             _spriteBatch.Draw(_bodyBase, _tile, Color.White);
+            
+            //Drawing map
             
             _spriteBatch.End();
 
