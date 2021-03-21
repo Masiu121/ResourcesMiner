@@ -11,6 +11,14 @@ You have to upgrade your miner if you want to go deeper. There will be 5 tiers o
 * Cooler
 * Fuel tank
 
+### Ores
+* Coal ore
+* Copper ore
+* Iron ore
+* Apatite ore
+* Diamond ore
+* Emerald ore
+
 ## Inspiration
 I inspired with the miner game from Palata Media. I will not use my game in any commercial use.
 I'm coding it only to be better at C#/MonoGame. After I release the first alpha, you will be able to download it and play for free.
