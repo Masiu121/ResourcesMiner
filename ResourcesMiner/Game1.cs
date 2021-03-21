@@ -29,6 +29,9 @@ namespace ResourcesMiner
          */
         private int[,] _map;
         
+        //Terrain textures
+        private Texture2D _grass;
+        private Texture2D _dirt;
         
         //Miner tiers
         private int _drillTier;
@@ -68,7 +71,7 @@ namespace ResourcesMiner
         {
             _tile = new Rectangle(Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y), TileWidth, TileWidth);
             _map = new int[MapWidth, MapWidth];
-            //GenerateMap();
+            GenerateMap();
             _drillTier = 0;
             _chassisTier = 0;
             _bodyTier = 0;
@@ -79,6 +82,9 @@ namespace ResourcesMiner
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            _grass = Content.Load<Texture2D>("Terrain/grass_block_side");
+            _dirt = Content.Load<Texture2D>("Terrain/dirt");
 
             _drillTier1 = Content.Load<Texture2D>("Components/Tier 1/drillTier1");
             _chassisTier1 = Content.Load<Texture2D>("Components/Tier 1/chassisTier1");
@@ -152,7 +158,7 @@ namespace ResourcesMiner
                     _canMoveTill = 0;
                 }
             }
-
+            
             _tile.X = Convert.ToInt32(_minerPos.X*TileWidth);
             _tile.Y = Convert.ToInt32(_minerPos.Y*TileWidth);
 
@@ -171,6 +177,7 @@ namespace ResourcesMiner
             _spriteBatch.Draw(_bodyBase, _tile, Color.White);
             
             //Drawing map
+            
             
             _spriteBatch.End();
 
@@ -244,11 +251,14 @@ namespace ResourcesMiner
         {
             for (int i = 0; i < MapWidth; i++)
             {
-                for (int j = 0; j < MapWidth; i++)
+                for (int j = 0; j < MapWidth; j++)
                 {
                     if (j != 0)
                     {
-                        _map[i, j] = 1;
+                        if(j == 1)
+                            _map[i, j] = 1;
+                        if (j > 1)
+                            _map[i, j] = 2;
                     }
                 }
             }
