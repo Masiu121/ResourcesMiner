@@ -10,7 +10,6 @@ namespace ResourcesMiner
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private const int TileWidth = 64;
-        private Rectangle _tile;
         private bool _canMove = true;
         private int _canMoveTill;
 
@@ -69,7 +68,9 @@ namespace ResourcesMiner
 
         protected override void Initialize()
         {
-            _tile = new Rectangle(Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y), TileWidth, TileWidth);
+            _graphics.PreferredBackBufferWidth = 1248;
+            _graphics.PreferredBackBufferWidth = 736;
+            _graphics.ApplyChanges();
             _map = new int[MapWidth, MapWidth];
             GenerateMap();
             _drillTier = 0;
@@ -114,20 +115,20 @@ namespace ResourcesMiner
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
-            {
-                if (_canMove)
-                {
-                    _minerPos.X -= 1;
-                    _canMove = false;
-                }
-
-            }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
                 if (_canMove)
                 {
-                    _minerPos.X += 1;
+                    _minerPos.X -= TileWidth;
+                    _canMove = false;
+                }
+
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            {
+                if (_canMove)
+                {
+                    _minerPos.X += TileWidth;
                     _canMove = false;
                 }
             }
@@ -135,7 +136,7 @@ namespace ResourcesMiner
             {
                 if (_canMove)
                 {
-                    _minerPos.Y -= 1;
+                    _minerPos.Y -= TileWidth;
                     _canMove = false;
                 }
             }
@@ -143,14 +144,14 @@ namespace ResourcesMiner
             {
                 if (_canMove)
                 {
-                    _minerPos.Y += 1;
+                    _minerPos.Y += TileWidth;
                     _canMove = false;
                 }
             }
 
             if (!_canMove)
             {
-                if (_canMoveTill < 35)
+                if (_canMoveTill < 20)
                     _canMoveTill++;
                 else
                 {
@@ -158,9 +159,6 @@ namespace ResourcesMiner
                     _canMoveTill = 0;
                 }
             }
-            
-            _tile.X = Convert.ToInt32(_minerPos.X*TileWidth);
-            _tile.Y = Convert.ToInt32(_minerPos.Y*TileWidth);
 
             base.Update(gameTime);
         }
@@ -170,15 +168,27 @@ namespace ResourcesMiner
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
+
+            //Drawing map
+            Texture2D texture = _dirt;
+            for (int i = 0; i < MapWidth; i++)
+            {
+                for (int j = 0; j < MapWidth; j++)
+                {
+                    if (_map[i, j] == 1)
+                        texture = _grass;
+                    if (_map[i, j] == 2)
+                        texture = _dirt;
+                    if (_map[i, j] != 0)
+                        _spriteBatch.Draw(texture, new Rectangle(Convert.ToInt32(_minerPos.X+i*TileWidth), Convert.ToInt32(_minerPos.Y+j*TileWidth), TileWidth, TileWidth), Color.White);
+                }
+            }
             
             //Drawing miner
-            _spriteBatch.Draw(_drillBase, _tile, Color.White);
-            _spriteBatch.Draw(_chassisBase, _tile, Color.White);
-            _spriteBatch.Draw(_bodyBase, _tile, Color.White);
-            
-            //Drawing map
-            
-            
+            _spriteBatch.Draw(_drillBase, new Rectangle(10, 10, TileWidth, TileWidth), Color.White);
+            _spriteBatch.Draw(_chassisBase, new Rectangle(10, 10, TileWidth, TileWidth), Color.White);
+            _spriteBatch.Draw(_bodyBase, new Rectangle(10, 10, TileWidth, TileWidth), Color.White);
+
             _spriteBatch.End();
 
             base.Draw(gameTime);
