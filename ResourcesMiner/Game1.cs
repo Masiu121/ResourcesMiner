@@ -68,14 +68,11 @@ namespace ResourcesMiner
 
         protected override void Initialize()
         {
-            _graphics.PreferredBackBufferWidth = 1248;
-            _graphics.PreferredBackBufferWidth = 736;
+            _graphics.PreferredBackBufferWidth = 1280;
+            _graphics.PreferredBackBufferHeight = 768;
             _graphics.ApplyChanges();
-            _map = new int[MapWidth, MapWidth];
-            GenerateMap();
-            _drillTier = 0;
-            _chassisTier = 0;
-            _bodyTier = 0;
+            
+            StartGame();
             
             base.Initialize();
         }
@@ -136,7 +133,7 @@ namespace ResourcesMiner
             {
                 if (_canMove)
                 {
-                    _minerPos.Y -= TileWidth;
+                    _minerPos.Y += TileWidth;
                     _canMove = false;
                 }
             }
@@ -144,7 +141,7 @@ namespace ResourcesMiner
             {
                 if (_canMove)
                 {
-                    _minerPos.Y += TileWidth;
+                    _minerPos.Y -= TileWidth;
                     _canMove = false;
                 }
             }
@@ -185,9 +182,9 @@ namespace ResourcesMiner
             }
             
             //Drawing miner
-            _spriteBatch.Draw(_drillBase, new Rectangle(10, 10, TileWidth, TileWidth), Color.White);
-            _spriteBatch.Draw(_chassisBase, new Rectangle(10, 10, TileWidth, TileWidth), Color.White);
-            _spriteBatch.Draw(_bodyBase, new Rectangle(10, 10, TileWidth, TileWidth), Color.White);
+            _spriteBatch.Draw(_drillBase, new Rectangle(608, 340, TileWidth, TileWidth), Color.White);
+            _spriteBatch.Draw(_chassisBase, new Rectangle(608, 340, TileWidth, TileWidth), Color.White);
+            _spriteBatch.Draw(_bodyBase, new Rectangle(608, 340, TileWidth, TileWidth), Color.White);
 
             _spriteBatch.End();
 
@@ -272,6 +269,17 @@ namespace ResourcesMiner
                     }
                 }
             }
+        }
+
+        private void StartGame()
+        {
+            _map = new int[MapWidth, MapWidth];
+            GenerateMap();
+            _drillTier = 0;
+            _chassisTier = 0;
+            _bodyTier = 0;
+            _minerPos.X = -MapWidth*TileWidth / 2 + _graphics.PreferredBackBufferWidth/2 + 32;
+            _minerPos.Y = 20;
         }
     }
 }
