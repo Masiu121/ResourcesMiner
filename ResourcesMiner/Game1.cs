@@ -31,6 +31,13 @@ namespace ResourcesMiner
         //Terrain textures
         private Texture2D _grass;
         private Texture2D _dirt;
+        private Texture2D _coal;
+        private Texture2D _coalDirt;
+        private Texture2D _copper;
+        private Texture2D _iron;
+        private Texture2D _apatite;
+        private Texture2D _diamond;
+        private Texture2D _emerald;
         
         //Miner tiers
         private int _drillTier;
@@ -83,6 +90,13 @@ namespace ResourcesMiner
 
             _grass = Content.Load<Texture2D>("Terrain/grass_block_side");
             _dirt = Content.Load<Texture2D>("Terrain/dirt");
+            _coal = Content.Load<Texture2D>("Terrain/Ores/coal_ore");
+            _coalDirt = Content.Load<Texture2D>("Terrain/Ores/coal_ore_dirt");
+            _copper = Content.Load<Texture2D>("Terrain/Ores/copper_ore");
+            _iron = Content.Load<Texture2D>("Terrain/Ores/iron_ore");
+            _apatite = Content.Load<Texture2D>("Terrain/Ores/apatite_ore");
+            _diamond = Content.Load<Texture2D>("Terrain/Ores/diamond_ore");
+            _emerald = Content.Load<Texture2D>("Terrain/Ores/emerald_ore");
 
             _drillTier1 = Content.Load<Texture2D>("Components/Tier 1/drillTier1");
             _chassisTier1 = Content.Load<Texture2D>("Components/Tier 1/chassisTier1");
@@ -133,14 +147,18 @@ namespace ResourcesMiner
             {
                 if (_canMove)
                 {
-                    _minerPos.Y += TileWidth;
-                    _canMove = false;
+                    if (_minerPos.Y < 5 * TileWidth + 20)
+                    {
+                        _minerPos.Y += TileWidth;
+                        _canMove = false;
+                    }
                 }
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
                 if (_canMove)
                 {
+                    
                     _minerPos.Y -= TileWidth;
                     _canMove = false;
                 }
@@ -176,6 +194,12 @@ namespace ResourcesMiner
                         texture = _grass;
                     if (_map[i, j] == 2)
                         texture = _dirt;
+                    if (_map[i, j] == 3)
+                        texture = _coal;
+                    if (_map[i, j] == 4)
+                        texture = null;
+                    if (_map[i, j] == 5)
+                        texture = null;
                     if (_map[i, j] != 0)
                         _spriteBatch.Draw(texture, new Rectangle(Convert.ToInt32(_minerPos.X+i*TileWidth), Convert.ToInt32(_minerPos.Y+j*TileWidth), TileWidth, TileWidth), Color.White);
                 }
@@ -266,6 +290,15 @@ namespace ResourcesMiner
                             _map[i, j] = 1;
                         if (j > 1)
                             _map[i, j] = 2;
+                        Random rand = new Random();
+                        if (j >= 2)
+                        {
+                            double chance = rand.NextDouble();
+                            if (chance < 0.2)
+                            {
+                                _map[i, j] = 3;
+                            }
+                        }
                     }
                 }
             }
@@ -278,8 +311,8 @@ namespace ResourcesMiner
             _drillTier = 0;
             _chassisTier = 0;
             _bodyTier = 0;
-            _minerPos.X = -MapWidth*TileWidth / 2 + _graphics.PreferredBackBufferWidth/2 + 32;
-            _minerPos.Y = 20;
+            _minerPos.X = -MapWidth*TileWidth / 2 + _graphics.PreferredBackBufferWidth/2 + TileWidth/2;
+            _minerPos.Y = 5*TileWidth + 20;
         }
     }
 }
