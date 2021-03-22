@@ -195,9 +195,9 @@ namespace ResourcesMiner
                     if (_map[i, j] == 2)
                         texture = _dirt;
                     if (_map[i, j] == 3)
-                        texture = _coal;
+                        texture = _coalDirt;
                     if (_map[i, j] == 4)
-                        texture = null;
+                        texture = _copper;
                     if (_map[i, j] == 5)
                         texture = null;
                     if (_map[i, j] != 0)
@@ -280,6 +280,7 @@ namespace ResourcesMiner
 
         private void GenerateMap()
         {
+            Random rand = new Random();
             for (int i = 0; i < MapWidth; i++)
             {
                 for (int j = 0; j < MapWidth; j++)
@@ -290,13 +291,22 @@ namespace ResourcesMiner
                             _map[i, j] = 1;
                         if (j > 1)
                             _map[i, j] = 2;
-                        Random rand = new Random();
-                        if (j >= 2)
+                        double chance;
+                        if (j >= 2 && j <= 15)
                         {
-                            double chance = rand.NextDouble();
-                            if (chance < 0.2)
+                            chance = rand.NextDouble();
+                            if (chance < 0.1)
                             {
                                 _map[i, j] = 3;
+                            }
+                        }
+
+                        if (j >= 10 && j <= 20)
+                        {
+                            chance = rand.NextDouble();
+                            if (chance < 0.1)
+                            {
+                                _map[i, j] = 4;
                             }
                         }
                     }
