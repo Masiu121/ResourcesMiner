@@ -31,6 +31,8 @@ namespace ResourcesMiner
         //Terrain textures
         private Texture2D _grass;
         private Texture2D _dirt;
+        private Texture2D _stone;
+        private Texture2D _deepslate;
         private Texture2D _coal;
         private Texture2D _coalDirt;
         private Texture2D _copper;
@@ -90,7 +92,9 @@ namespace ResourcesMiner
 
             _grass = Content.Load<Texture2D>("Terrain/grass_block_side");
             _dirt = Content.Load<Texture2D>("Terrain/dirt");
-            _coal = Content.Load<Texture2D>("Terrain/Ores/coal_ore");
+            _stone = Content.Load<Texture2D>("Terrain/stone");
+            _deepslate = Content.Load<Texture2D>("Terrain/deepslate");
+                _coal = Content.Load<Texture2D>("Terrain/Ores/coal_ore");
             _coalDirt = Content.Load<Texture2D>("Terrain/Ores/coal_ore_dirt");
             _copper = Content.Load<Texture2D>("Terrain/Ores/copper_ore");
             _iron = Content.Load<Texture2D>("Terrain/Ores/iron_ore");
@@ -195,11 +199,23 @@ namespace ResourcesMiner
                     if (_map[i, j] == 2)
                         texture = _dirt;
                     if (_map[i, j] == 3)
-                        texture = _coalDirt;
+                        texture = _stone;
                     if (_map[i, j] == 4)
-                        texture = _copper;
+                        texture = _deepslate;
                     if (_map[i, j] == 5)
-                        texture = null;
+                        texture = _coalDirt;
+                    if (_map[i, j] == 6)
+                        texture = _coal;
+                    if (_map[i, j] == 7)
+                        texture = _copper;
+                    if (_map[i, j] == 8)
+                        texture = _iron;
+                    if (_map[i, j] == 9)
+                        texture = _apatite;
+                    if (_map[i, j] == 10)
+                        texture = _diamond;
+                    if (_map[i, j] == 11)
+                        texture = _emerald;
                     if (_map[i, j] != 0)
                         _spriteBatch.Draw(texture, new Rectangle(Convert.ToInt32(_minerPos.X+i*TileWidth), Convert.ToInt32(_minerPos.Y+j*TileWidth), TileWidth, TileWidth), Color.White);
                 }
@@ -287,17 +303,48 @@ namespace ResourcesMiner
                 {
                     if (j != 0)
                     {
+                        double chance;
                         if(j == 1)
                             _map[i, j] = 1;
                         if (j > 1)
+                        {
                             _map[i, j] = 2;
-                        double chance;
+                        }
+                        
+                        if (j > 3)
+                            _map[i, j] = 3;
+                        
+                        if (j == 4)
+                        {
+                            chance = rand.NextDouble();
+                            if(chance < 0.4)
+                                _map[i, j] = 2;
+                        }
+                        
+                        if (j > 30)
+                            _map[i, j] = 4;
+                        if (j == 30)
+                        {
+                            chance = rand.NextDouble();
+                            if(chance < 0.8)
+                                _map[i, j] = 4;
+                        }
+                        if (j == 29)
+                        {
+                            chance = rand.NextDouble();
+                            if(chance < 0.2)
+                                _map[i, j] = 4;
+                        }
+                        
                         if (j >= 2 && j <= 15)
                         {
                             chance = rand.NextDouble();
                             if (chance < 0.1)
                             {
-                                _map[i, j] = 3;
+                                if (j > 4)
+                                    _map[i, j] = 6;
+                                else
+                                    _map[i, j] = 5;
                             }
                         }
 
@@ -306,7 +353,43 @@ namespace ResourcesMiner
                             chance = rand.NextDouble();
                             if (chance < 0.1)
                             {
-                                _map[i, j] = 4;
+                                _map[i, j] = 7;
+                            }
+                        }
+                        
+                        if (j >= 15 && j <= 30)
+                        {
+                            chance = rand.NextDouble();
+                            if (chance < 0.1)
+                            {
+                                _map[i, j] = 8;
+                            }
+                        }
+                        
+                        if (j >= 25 && j <= 40)
+                        {
+                            chance = rand.NextDouble();
+                            if (chance < 0.05)
+                            {
+                                _map[i, j] = 9;
+                            }
+                        }
+                        
+                        if (j >= 35 && j <= 50)
+                        {
+                            chance = rand.NextDouble();
+                            if (chance < 0.01)
+                            {
+                                _map[i, j] = 10;
+                            }
+                        }
+                        
+                        if (j >= 40 && j <= 64)
+                        {
+                            chance = rand.NextDouble();
+                            if (chance < 0.01)
+                            {
+                                _map[i, j] = 11;
                             }
                         }
                     }
