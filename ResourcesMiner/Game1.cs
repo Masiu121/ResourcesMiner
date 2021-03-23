@@ -28,6 +28,7 @@ namespace ResourcesMiner
         private Texture2D _copper;
         private Texture2D _iron;
         private Texture2D _apatite;
+        private Texture2D _apatite_deepslate;
         private Texture2D _diamond;
         private Texture2D _emerald;
         
@@ -84,11 +85,12 @@ namespace ResourcesMiner
             _dirt = Content.Load<Texture2D>("Terrain/dirt");
             _stone = Content.Load<Texture2D>("Terrain/stone");
             _deepslate = Content.Load<Texture2D>("Terrain/deepslate");
-                _coal = Content.Load<Texture2D>("Terrain/Ores/coal_ore");
+            _coal = Content.Load<Texture2D>("Terrain/Ores/coal_ore");
             _coalDirt = Content.Load<Texture2D>("Terrain/Ores/coal_ore_dirt");
             _copper = Content.Load<Texture2D>("Terrain/Ores/copper_ore");
             _iron = Content.Load<Texture2D>("Terrain/Ores/iron_ore");
             _apatite = Content.Load<Texture2D>("Terrain/Ores/apatite_ore");
+            _apatite_deepslate = Content.Load<Texture2D>("Terrain/Ores/apatite_ore_deepslate");
             _diamond = Content.Load<Texture2D>("Terrain/Ores/diamond_ore");
             _emerald = Content.Load<Texture2D>("Terrain/Ores/emerald_ore");
 
@@ -349,7 +351,14 @@ namespace ResourcesMiner
                         chance = rand.NextDouble();
                         if (chance < 0.05)
                         {
-                            tile.Type = 9;
+                            if (j < 32)
+                            {
+                                tile.Type = 9;
+                            }
+                            else
+                            {
+                                tile.Type = 10;
+                            }
                         }
                     }
 
@@ -358,7 +367,7 @@ namespace ResourcesMiner
                         chance = rand.NextDouble();
                         if (chance < 0.01)
                         {
-                            tile.Type = 10;
+                            tile.Type = 11;
                         }
                     }
 
@@ -367,7 +376,7 @@ namespace ResourcesMiner
                         chance = rand.NextDouble();
                         if (chance < 0.01)
                         {
-                            tile.Type = 11;
+                            tile.Type = 12;
                         }
                     }
 
@@ -415,9 +424,12 @@ namespace ResourcesMiner
                             _map[i, j].Texture = _apatite;
                             break;
                         case 10:
-                            _map[i, j].Texture = _diamond;
+                            _map[i, j].Texture = _apatite_deepslate;
                             break;
                         case 11:
+                            _map[i, j].Texture = _diamond;
+                            break;
+                        case 12:
                             _map[i, j].Texture = _emerald;
                             break;
                     }
