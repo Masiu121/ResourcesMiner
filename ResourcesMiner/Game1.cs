@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Diagnostics;
 
 namespace ResourcesMiner
 {
@@ -16,17 +17,7 @@ namespace ResourcesMiner
         private Vector2 _minerPos;
         private const int MapWidth = 64;
         
-        /* 0 - void
-         * 1 - grass
-         * 2 - dirt
-         * 3 - coal ore
-         * 4 - copper ore
-         * 5 - iron ore
-         * 6 - apatite ore
-         * 7 - diamond ore
-         * 8 - emerald ore
-         */
-        private int[,] _map;
+        private GameTile[,] _map;
         
         //Terrain textures
         private Texture2D _grass;
@@ -122,6 +113,7 @@ namespace ResourcesMiner
             _chassisTier5 = Content.Load<Texture2D>("Components/Tier 5/chassisTier5");
             _bodyTier5 = Content.Load<Texture2D>("Components/Tier 5/bodyTier5");
             ApplyTextures();
+            setTileTexture();
         }
 
         protected override void Update(GameTime gameTime)
@@ -189,35 +181,12 @@ namespace ResourcesMiner
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
 
             //Drawing map
-            Texture2D texture = _dirt;
             for (int i = 0; i < MapWidth; i++)
             {
                 for (int j = 0; j < MapWidth; j++)
                 {
-                    if (_map[i, j] == 1)
-                        texture = _grass;
-                    if (_map[i, j] == 2)
-                        texture = _dirt;
-                    if (_map[i, j] == 3)
-                        texture = _stone;
-                    if (_map[i, j] == 4)
-                        texture = _deepslate;
-                    if (_map[i, j] == 5)
-                        texture = _coalDirt;
-                    if (_map[i, j] == 6)
-                        texture = _coal;
-                    if (_map[i, j] == 7)
-                        texture = _copper;
-                    if (_map[i, j] == 8)
-                        texture = _iron;
-                    if (_map[i, j] == 9)
-                        texture = _apatite;
-                    if (_map[i, j] == 10)
-                        texture = _diamond;
-                    if (_map[i, j] == 11)
-                        texture = _emerald;
-                    if (_map[i, j] != 0)
-                        _spriteBatch.Draw(texture, new Rectangle(Convert.ToInt32(_minerPos.X+i*TileWidth), Convert.ToInt32(_minerPos.Y+j*TileWidth), TileWidth, TileWidth), Color.White);
+                    if(_map[i, j].Texture != null)
+                        _spriteBatch.Draw(_map[i, j].Texture, new Rectangle(Convert.ToInt32(_minerPos.X+i*TileWidth), Convert.ToInt32(_minerPos.Y+j*TileWidth), TileWidth, TileWidth), Color.White);
                 }
             }
             
@@ -296,102 +265,98 @@ namespace ResourcesMiner
 
         private void GenerateMap()
         {
+            GameTile tile = null;
             Random rand = new Random();
             for (int i = 0; i < MapWidth; i++)
             {
                 for (int j = 0; j < MapWidth; j++)
                 {
-                    if (j != 0)
+                    double chance;
+                    if (j == 0)
+                        tile = new GameTile(0, new Location(i, j));
+                    if (j == 1)
+                        tile = new GameTile(1, new Location(i, j));
+                    if (j > 1)
+                        tile = new GameTile(2, new Location(i, j));
+                    
+                    if (j > 3)
                     {
-                        double chance;
-                        if(j == 1)
-                            _map[i, j] = 1;
-                        if (j > 1)
-                        {
-                            _map[i, j] = 2;
-                        }
-                        
-                        if (j > 3)
-                            _map[i, j] = 3;
-                        
+                        tile = new GameTile(3, new Location(i, j));
                         if (j == 4)
                         {
                             chance = rand.NextDouble();
-                            if(chance < 0.4)
-                                _map[i, j] = 2;
+                            if (chance < 0.5)
+                                tile = new GameTile(2, new Location(i, j));
                         }
-                        
-                        if (j > 30)
-                            _map[i, j] = 4;
-                        if (j == 30)
+                    }
+
+                    if (j > 30)
+                    {
+                        tile = new GameTile(4, new Location(i, j));
+                        if (j == 31)
                         {
                             chance = rand.NextDouble();
-                            if(chance < 0.8)
-                                _map[i, j] = 4;
-                        }
-                        if (j == 29)
-                        {
-                            chance = rand.NextDouble();
-                            if(chance < 0.2)
-                                _map[i, j] = 4;
-                        }
-                        
-                        if (j >= 2 && j <= 15)
-                        {
-                            chance = rand.NextDouble();
-                            if (chance < 0.1)
-                            {
-                                if (j > 4)
-                                    _map[i, j] = 6;
-                                else
-                                    _map[i, j] = 5;
-                            }
+                            if (chance < 0.8)
+                                tile = new GameTile(3, new Location(i, j));
                         }
 
-                        if (j >= 10 && j <= 20)
+                        if (j == 32)
                         {
                             chance = rand.NextDouble();
-                            if (chance < 0.1)
-                            {
-                                _map[i, j] = 7;
-                            }
+                            if (chance < 0.3)
+                                tile = new GameTile(3, new Location(i, j));
                         }
-                        
-                        if (j >= 15 && j <= 30)
-                        {
-                            chance = rand.NextDouble();
-                            if (chance < 0.1)
-                            {
-                                _map[i, j] = 8;
-                            }
-                        }
-                        
-                        if (j >= 25 && j <= 40)
-                        {
-                            chance = rand.NextDouble();
-                            if (chance < 0.05)
-                            {
-                                _map[i, j] = 9;
-                            }
-                        }
-                        
-                        if (j >= 35 && j <= 50)
-                        {
-                            chance = rand.NextDouble();
-                            if (chance < 0.01)
-                            {
-                                _map[i, j] = 10;
-                            }
-                        }
-                        
-                        if (j >= 40 && j <= 64)
-                        {
-                            chance = rand.NextDouble();
-                            if (chance < 0.01)
-                            {
-                                _map[i, j] = 11;
-                            }
-                        }
+                    }
+
+                    _map[i, j] = tile;
+                }
+            }
+        }
+
+        private void setTileTexture()
+        {
+            for(int i = 0; i < TileWidth; i++)
+            {
+                for (int j = 0; j < TileWidth; j++)
+                {
+                    switch (_map[i, j].Type)
+                    {
+                        case 0:
+                            _map[i, j].Texture = null;
+                            break;
+                        case 1:
+                            _map[i, j].Texture = _grass;
+                            break;
+                        case 2:
+                            _map[i, j].Texture = _dirt;
+                            break;
+                        case 3:
+                            _map[i, j].Texture = _stone;
+                            break;
+                        case 4:
+                            _map[i, j].Texture = _deepslate;
+                            break;
+                        case 5:
+                            _map[i, j].Texture = _coalDirt;
+                            break;
+                        case 6:
+                            _map[i, j].Texture = _coal;
+                            break;
+                        case 7:
+                            _map[i, j].Texture = _copper;
+                            break;
+                        case 8:
+                            _map[i, j].Texture = _iron;
+                            break;
+                        case 9:
+                            _map[i, j].Texture = _apatite;
+                            break;
+                        case 10:
+                            _map[i, j].Texture = _diamond;
+                            break;
+                        case 11:
+                            _map[i, j].Texture = _emerald;
+                            break;
                     }
                 }
             }
@@ -399,7 +364,7 @@ namespace ResourcesMiner
 
         private void StartGame()
         {
-            _map = new int[MapWidth, MapWidth];
+            _map = new GameTile[MapWidth, MapWidth];
             GenerateMap();
             _drillTier = 0;
             _chassisTier = 0;
