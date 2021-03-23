@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Diagnostics;
 
 namespace ResourcesMiner
 {
@@ -113,7 +112,7 @@ namespace ResourcesMiner
             _chassisTier5 = Content.Load<Texture2D>("Components/Tier 5/chassisTier5");
             _bodyTier5 = Content.Load<Texture2D>("Components/Tier 5/bodyTier5");
             ApplyTextures();
-            setTileTexture();
+            SetTileTexture();
         }
 
         protected override void Update(GameTime gameTime)
@@ -272,6 +271,8 @@ namespace ResourcesMiner
                 for (int j = 0; j < MapWidth; j++)
                 {
                     double chance;
+                    
+                    //Base map generation
                     if (j == 0)
                         tile = new GameTile(0, new Location(i, j));
                     if (j == 1)
@@ -307,13 +308,75 @@ namespace ResourcesMiner
                                 tile = new GameTile(3, new Location(i, j));
                         }
                     }
+                    
+                    //Ores generation
+                    if (j > 1 && j < 16)
+                    {
+                        chance = rand.NextDouble();
+                        if (chance < 0.1)
+                        {
+                            if (j < 4)
+                            {
+                                tile.Type = 5;
+                            }
+                            else
+                            {
+                                tile.Type = 6;
+                            }
+                        }
+                    }
+
+                    if (j > 9 && j < 26)
+                    {
+                        chance = rand.NextDouble();
+                        if (chance < 0.1)
+                        {
+                            tile.Type = 7;
+                        }
+                    }
+
+                    if (j > 14 && j < 31)
+                    {
+                        chance = rand.NextDouble();
+                        if (chance < 0.05)
+                        {
+                            tile.Type = 8;
+                        }
+                    }
+
+                    if (j > 24 && j < 41)
+                    {
+                        chance = rand.NextDouble();
+                        if (chance < 0.05)
+                        {
+                            tile.Type = 9;
+                        }
+                    }
+
+                    if (j > 34 && j < 56)
+                    {
+                        chance = rand.NextDouble();
+                        if (chance < 0.01)
+                        {
+                            tile.Type = 10;
+                        }
+                    }
+
+                    if (j > 44 && j < 65)
+                    {
+                        chance = rand.NextDouble();
+                        if (chance < 0.01)
+                        {
+                            tile.Type = 11;
+                        }
+                    }
 
                     _map[i, j] = tile;
                 }
             }
         }
 
-        private void setTileTexture()
+        private void SetTileTexture()
         {
             for(int i = 0; i < TileWidth; i++)
             {
