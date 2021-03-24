@@ -18,6 +18,12 @@ namespace ResourcesMiner
         
         private GameTile[,] _map;
         
+        //Movement variables
+        private bool _moveRight;
+        private bool _moveLeft;
+        private bool _moveUp;
+        private bool _moveDown;
+        
         //Terrain textures
         private Texture2D _grass;
         private Texture2D _dirt;
@@ -28,7 +34,7 @@ namespace ResourcesMiner
         private Texture2D _copper;
         private Texture2D _iron;
         private Texture2D _apatite;
-        private Texture2D _apatite_deepslate;
+        private Texture2D _apatiteDeepslate;
         private Texture2D _diamond;
         private Texture2D _emerald;
         
@@ -90,7 +96,7 @@ namespace ResourcesMiner
             _copper = Content.Load<Texture2D>("Terrain/Ores/copper_ore");
             _iron = Content.Load<Texture2D>("Terrain/Ores/iron_ore");
             _apatite = Content.Load<Texture2D>("Terrain/Ores/apatite_ore");
-            _apatite_deepslate = Content.Load<Texture2D>("Terrain/Ores/apatite_ore_deepslate");
+            _apatiteDeepslate = Content.Load<Texture2D>("Terrain/Ores/apatite_ore_deepslate");
             _diamond = Content.Load<Texture2D>("Terrain/Ores/diamond_ore");
             _emerald = Content.Load<Texture2D>("Terrain/Ores/emerald_ore");
 
@@ -127,8 +133,8 @@ namespace ResourcesMiner
             {
                 if (_canMove)
                 {
-                    _minerPos.X -= TileWidth;
                     _canMove = false;
+                    _moveRight = true;
                 }
 
             }
@@ -136,28 +142,24 @@ namespace ResourcesMiner
             {
                 if (_canMove)
                 {
-                    _minerPos.X += TileWidth;
                     _canMove = false;
+                    _moveLeft = true;
                 }
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
                 if (_canMove)
                 {
-                    if (_minerPos.Y < 5 * TileWidth + 20)
-                    {
-                        _minerPos.Y += TileWidth;
-                        _canMove = false;
-                    }
+                    _canMove = false;
+                    _moveUp = true;
                 }
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
                 if (_canMove)
                 {
-                    
-                    _minerPos.Y -= TileWidth;
                     _canMove = false;
+                    _moveDown = true;
                 }
             }
 
@@ -424,7 +426,7 @@ namespace ResourcesMiner
                             _map[i, j].Texture = _apatite;
                             break;
                         case 10:
-                            _map[i, j].Texture = _apatite_deepslate;
+                            _map[i, j].Texture = _apatiteDeepslate;
                             break;
                         case 11:
                             _map[i, j].Texture = _diamond;
