@@ -193,6 +193,18 @@
 /processorParam:TextureFormat=Color
 /build:Components/Tier 5/drillTier5.png
 
+#begin Terrain/border.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Terrain/border.png
+
 #begin Terrain/deepslate.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -228,6 +240,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Terrain/grass_block_side.png
+
+#begin Terrain/mined_block.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Terrain/mined_block.png
 
 #begin Terrain/Ores/apatite_ore.png
 /importer:TextureImporter
