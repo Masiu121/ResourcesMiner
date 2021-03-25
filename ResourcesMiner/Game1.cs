@@ -10,19 +10,20 @@ namespace ResourcesMiner
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private const int TileWidth = 64;
-        private bool _canMove = true;
-        private int _canMoveTill;
 
-        private Vector2 _minerPos;
         private const int MapWidth = 64;
         
         private GameTile[,] _map;
         
         //Movement variables
+        private Vector2 _minerPos;
+        private bool _canMove = true;
         private bool _moveRight;
         private bool _moveLeft;
         private bool _moveUp;
         private bool _moveDown;
+        private int _movedBy;
+        private int _movementSpeed = 2;
         
         //Terrain textures
         private Texture2D _grass;
@@ -165,12 +166,40 @@ namespace ResourcesMiner
 
             if (!_canMove)
             {
-                if (_canMoveTill < 20)
-                    _canMoveTill++;
+                if (_movedBy < 64)
+                {
+                    if (_moveRight)
+                    {
+                        _minerPos.X -= _movementSpeed;
+                        _movedBy += _movementSpeed;
+                    }
+
+                    if (_moveLeft)
+                    {
+                        _minerPos.X += _movementSpeed;
+                        _movedBy += _movementSpeed;
+                    }
+
+                    if (_moveDown)
+                    {
+                        _minerPos.Y -= _movementSpeed;
+                        _movedBy += _movementSpeed;
+                    }
+
+                    if (_moveUp)
+                    {
+                        _minerPos.Y += _movementSpeed;
+                        _movedBy += _movementSpeed;
+                    }
+                }
                 else
                 {
                     _canMove = true;
-                    _canMoveTill = 0;
+                    _moveRight = false;
+                    _moveLeft = false;
+                    _moveUp = false;
+                    _moveDown = false;
+                    _movedBy = 0;
                 }
             }
 
