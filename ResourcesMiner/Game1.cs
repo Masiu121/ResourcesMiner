@@ -42,6 +42,8 @@ namespace ResourcesMiner
         private Texture2D _apatiteDeepslate;
         private Texture2D _diamond;
         private Texture2D _emerald;
+        private Texture2D _minedBlock;
+        private Texture2D _border;
         
         //Miner tiers
         private int _drillTier;
@@ -104,6 +106,8 @@ namespace ResourcesMiner
             _apatiteDeepslate = Content.Load<Texture2D>("Terrain/Ores/apatite_ore_deepslate");
             _diamond = Content.Load<Texture2D>("Terrain/Ores/diamond_ore");
             _emerald = Content.Load<Texture2D>("Terrain/Ores/emerald_ore");
+            _border = Content.Load<Texture2D>("Terrain/border");
+            _minedBlock = Content.Load<Texture2D>("Terrain/mined_block");
 
             _drillTier1 = Content.Load<Texture2D>("Components/Tier 1/drillTier1");
             _chassisTier1 = Content.Load<Texture2D>("Components/Tier 1/chassisTier1");
@@ -478,7 +482,7 @@ namespace ResourcesMiner
                             _map[i, j].Texture = _emerald;
                             break;
                         case 13:
-                            _map[i, j].Texture = null;
+                            _map[i, j].Texture = _minedBlock;
                             break;
                     }
                 }
