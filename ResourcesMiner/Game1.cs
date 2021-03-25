@@ -527,6 +527,34 @@ namespace ResourcesMiner
                     _movementSpeed = _miningMovementSpeed;
                     _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
                     break;
+                case 6:
+                    _movementSpeed = _miningMovementSpeed;
+                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    break;
+                case 7:
+                    _movementSpeed = _miningMovementSpeed;
+                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    break;
+                case 8:
+                    _movementSpeed = _miningMovementSpeed;
+                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    break;
+                case 9:
+                    _movementSpeed = _miningMovementSpeed;
+                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    break;
+                case 10:
+                    _movementSpeed = _miningMovementSpeed;
+                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    break;
+                case 11:
+                    _movementSpeed = _miningMovementSpeed;
+                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    break;
+                case 12:
+                    _movementSpeed = _miningMovementSpeed;
+                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    break;
                 case 13:
                     _movementSpeed = _baseMovementSpeed;
                     break;
