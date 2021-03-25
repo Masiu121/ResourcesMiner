@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
 using System;
 
 namespace ResourcesMiner
@@ -17,13 +18,16 @@ namespace ResourcesMiner
         
         //Movement variables
         private Vector2 _minerPos;
+        private Vector2 _mapPos;
         private bool _canMove = true;
         private bool _moveRight;
         private bool _moveLeft;
         private bool _moveUp;
         private bool _moveDown;
         private int _movedBy;
-        private int _movementSpeed = 2;
+        private int _movementSpeed;
+        private int _baseMovementSpeed = 2;
+        private int _miningMovementSpeed = 1;
         
         //Terrain textures
         private Texture2D _grass;
@@ -130,39 +134,49 @@ namespace ResourcesMiner
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            if (Keyboard.GetState().IsKeyDown(Keys.Right) && _minerPos.X < 63)
             {
                 if (_canMove)
                 {
                     _canMove = false;
                     _moveRight = true;
+                    _minerPos.X++;
+                    CheckForType();
                 }
 
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            if (Keyboard.GetState().IsKeyDown(Keys.Left) && _minerPos.X > 0)
             {
                 if (_canMove)
                 {
                     _canMove = false;
                     _moveLeft = true;
+                    _minerPos.X--;
+                    CheckForType();
                 }
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            if (Keyboard.GetState().IsKeyDown(Keys.Up) && _minerPos.Y > 0)
             {
                 if (_canMove)
                 {
                     _canMove = false;
                     _moveUp = true;
+                    _minerPos.Y--;
+                    CheckForType();
                 }
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            if (Keyboard.GetState().IsKeyDown(Keys.Down) && _minerPos.Y < 63)
             {
                 if (_canMove)
                 {
                     _canMove = false;
                     _moveDown = true;
+                    _minerPos.Y++;
+                    CheckForType();
                 }
             }
+            
+            Debug.WriteLine("X: " + _minerPos.X + ", Y: " + _minerPos.Y);
 
             if (!_canMove)
             {
@@ -170,25 +184,25 @@ namespace ResourcesMiner
                 {
                     if (_moveRight)
                     {
-                        _minerPos.X -= _movementSpeed;
+                        _mapPos.X -= _movementSpeed;
                         _movedBy += _movementSpeed;
                     }
 
                     if (_moveLeft)
                     {
-                        _minerPos.X += _movementSpeed;
+                        _mapPos.X += _movementSpeed;
                         _movedBy += _movementSpeed;
                     }
 
                     if (_moveDown)
                     {
-                        _minerPos.Y -= _movementSpeed;
+                        _mapPos.Y -= _movementSpeed;
                         _movedBy += _movementSpeed;
                     }
 
                     if (_moveUp)
                     {
-                        _minerPos.Y += _movementSpeed;
+                        _mapPos.Y += _movementSpeed;
                         _movedBy += _movementSpeed;
                     }
                 }
@@ -218,7 +232,7 @@ namespace ResourcesMiner
                 for (int j = 0; j < MapWidth; j++)
                 {
                     if(_map[i, j].Texture != null)
-                        _spriteBatch.Draw(_map[i, j].Texture, new Rectangle(Convert.ToInt32(_minerPos.X+i*TileWidth), Convert.ToInt32(_minerPos.Y+j*TileWidth), TileWidth, TileWidth), Color.White);
+                        _spriteBatch.Draw(_map[i, j].Texture, new Rectangle(Convert.ToInt32(_mapPos.X+i*TileWidth), Convert.ToInt32(_mapPos.Y+j*TileWidth), TileWidth, TileWidth), Color.White);
                 }
             }
             
@@ -463,6 +477,9 @@ namespace ResourcesMiner
                         case 12:
                             _map[i, j].Texture = _emerald;
                             break;
+                        case 13:
+                            _map[i, j].Texture = null;
+                            break;
                     }
                 }
             }
@@ -475,8 +492,47 @@ namespace ResourcesMiner
             _drillTier = 0;
             _chassisTier = 0;
             _bodyTier = 0;
-            _minerPos.X = -MapWidth*TileWidth / 2 + _graphics.PreferredBackBufferWidth/2 + TileWidth/2;
-            _minerPos.Y = 5*TileWidth + 20;
+            _mapPos.X = -MapWidth*TileWidth / 2 + _graphics.PreferredBackBufferWidth/2 + TileWidth/2;
+            _mapPos.Y = 5*TileWidth + 20;
+            _minerPos = new Vector2(31, 0);
+            _movementSpeed = _baseMovementSpeed;
+        }
+
+        private void CheckForType()
+        {
+            int type = _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type;
+
+            switch (type)
+            {
+                case 0:
+                    _movementSpeed = _baseMovementSpeed;
+                    break;
+                case 1:
+                    _movementSpeed = _miningMovementSpeed;
+                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    break;
+                case 2:
+                    _movementSpeed = _miningMovementSpeed;
+                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    break;
+                case 3:
+                    _movementSpeed = _miningMovementSpeed;
+                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    break;
+                case 4:
+                    _movementSpeed = _miningMovementSpeed;
+                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    break;
+                case 5:
+                    _movementSpeed = _miningMovementSpeed;
+                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    break;
+                case 13:
+                    _movementSpeed = _baseMovementSpeed;
+                    break;
+            }
+            
+            SetTileTexture();
         }
     }
 }
