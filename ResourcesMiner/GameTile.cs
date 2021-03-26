@@ -25,20 +25,22 @@ namespace ResourcesMiner
 
         public void SetHardness()
         {
-            if (Type == 1 || Type == 2)
+            if (Type == 0 || Type == 14)
                 Hardness = 0;
+            if (Type == 1 || Type == 2)
+                Hardness = 1;
             if (Type == 3)
-                Hardness = 1;
-            if (Type == 4)
-                Hardness = 3;
-            if (Type == 5 || Type == 6)
-                Hardness = 1;
-            if (Type == 7 || Type == 8)
                 Hardness = 2;
+            if (Type == 4)
+                Hardness = 4;
+            if (Type == 5 || Type == 6)
+                Hardness = 2;
+            if (Type == 7 || Type == 8)
+                Hardness = 3;
             if (Type == 9 || Type == 10)
-                Hardness = 3;
+                Hardness = 4;
             if (Type == 11 || Type == 12)
-                Hardness = 3;
+                Hardness = 4;
         }
     }
 

@@ -16,8 +16,11 @@ namespace ResourcesMiner
         private const int TileWidth = 64;
         private const int MapWidth = 64;
         private GameTile[,] _map;
+        
+        //Fuel variables
         private float _fuel;
         private float _fuelConsumption;
+        private float _baseFuelConsumption = 0.2f;
 
         //Movement variables
         private Vector2 _minerPos;
@@ -515,6 +518,7 @@ namespace ResourcesMiner
             GenerateMap();
             _inventory = new Inventory();
             _fuel = 100.0f;
+            _fuelConsumption = _baseFuelConsumption;
             _drillTier = 0;
             _chassisTier = 0;
             _bodyTier = 0;
@@ -592,16 +596,19 @@ namespace ResourcesMiner
             switch (tile.Hardness)
             {
                 case 0:
-                    _miningMovementSpeed = 2;
+                    _fuelConsumption = _baseFuelConsumption;
                     break;
                 case 1:
-                    _miningMovementSpeed = 1;
+                    _fuelConsumption = 0.5f;
                     break;
                 case 2:
-                    _miningMovementSpeed = 1;
+                    _miningMovementSpeed = 0.5f;
                     break;
                 case 3:
-                    _miningMovementSpeed = 1;
+                    _miningMovementSpeed = 1.0f;
+                    break;
+                case 4:
+                    _miningMovementSpeed = 2.0f;
                     break;
             }
         }
