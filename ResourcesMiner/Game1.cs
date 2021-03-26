@@ -143,9 +143,6 @@ namespace ResourcesMiner
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            
-            if(Keyboard.GetState().IsKeyDown(Keys.K))
-                Debug.WriteLine("Fuel: " + _fuel);
 
             if (_fuel >= _fuelConsumption)
             {
@@ -378,79 +375,82 @@ namespace ResourcesMiner
                     }
                     
                     //Ores generation
-                    if (j > 1 && j < 16)
+                    if (tile != null)
                     {
-                        chance = rand.NextDouble();
-                        if (chance < 0.1)
+                        if (j > 1 && j < 16)
                         {
-                            if (j < 4)
+                            chance = rand.NextDouble();
+                            if (chance < 0.1)
                             {
-                                tile.Type = 5;
-                            }
-                            else
-                            {
-                                tile.Type = 6;
-                            }
-                        }
-                    }
-
-                    if (j > 9 && j < 26)
-                    {
-                        chance = rand.NextDouble();
-                        if (chance < 0.1)
-                        {
-                            tile.Type = 7;
-                        }
-                    }
-
-                    if (j > 14 && j < 31)
-                    {
-                        chance = rand.NextDouble();
-                        if (chance < 0.05)
-                        {
-                            tile.Type = 8;
-                        }
-                    }
-
-                    if (j > 24 && j < 41)
-                    {
-                        chance = rand.NextDouble();
-                        if (chance < 0.05)
-                        {
-                            if (j < 32)
-                            {
-                                tile.Type = 9;
-                            }
-                            else
-                            {
-                                tile.Type = 10;
+                                if (j < 4)
+                                {
+                                    tile.Type = 5;
+                                }
+                                else
+                                {
+                                    tile.Type = 6;
+                                }
                             }
                         }
-                    }
 
-                    if (j > 34 && j < 56)
-                    {
-                        chance = rand.NextDouble();
-                        if (chance < 0.01)
+                        if (j > 9 && j < 26)
                         {
-                            tile.Type = 11;
+                            chance = rand.NextDouble();
+                            if (chance < 0.1)
+                            {
+                                tile.Type = 7;
+                            }
+                        }
+
+                        if (j > 14 && j < 31)
+                        {
+                            chance = rand.NextDouble();
+                            if (chance < 0.05)
+                            {
+                                tile.Type = 8;
+                            }
+                        }
+
+                        if (j > 24 && j < 41)
+                        {
+                            chance = rand.NextDouble();
+                            if (chance < 0.05)
+                            {
+                                if (j < 32)
+                                {
+                                    tile.Type = 9;
+                                }
+                                else
+                                {
+                                    tile.Type = 10;
+                                }
+                            }
+                        }
+
+                        if (j > 34 && j < 56)
+                        {
+                            chance = rand.NextDouble();
+                            if (chance < 0.02)
+                            {
+                                tile.Type = 11;
+                            }
+                        }
+
+                        if (j > 44 && j < 65)
+                        {
+                            chance = rand.NextDouble();
+                            if (chance < 0.02)
+                            {
+                                tile.Type = 12;
+                            }
+                        }
+
+                        if (i == 0 || i == MapWidth - 1 || j == MapWidth - 1)
+                        {
+                            tile.Type = 14;
                         }
                     }
 
-                    if (j > 44 && j < 65)
-                    {
-                        chance = rand.NextDouble();
-                        if (chance < 0.01)
-                        {
-                            tile.Type = 12;
-                        }
-                    }
-
-                    if (i == 0 || i == MapWidth-1 || j == MapWidth-1)
-                    {
-                        tile.Type = 14;
-                    }
-                    
                     _map[i, j] = tile;
                 }
             }
