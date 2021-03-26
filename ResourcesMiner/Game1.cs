@@ -142,7 +142,7 @@ namespace ResourcesMiner
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+                Exit(); 
 
             if (_fuel >= _fuelConsumption)
             {
