@@ -138,7 +138,7 @@ namespace ResourcesMiner
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Right) && _minerPos.X < 63)
+            if (Keyboard.GetState().IsKeyDown(Keys.Right) && _minerPos.X < 62)
             {
                 if (_canMove)
                 {
@@ -149,7 +149,7 @@ namespace ResourcesMiner
                 }
 
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Left) && _minerPos.X > 0)
+            if (Keyboard.GetState().IsKeyDown(Keys.Left) && _minerPos.X > 1)
             {
                 if (_canMove)
                 {
@@ -169,7 +169,7 @@ namespace ResourcesMiner
                     CheckForType();
                 }
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Down) && _minerPos.Y < 63)
+            if (Keyboard.GetState().IsKeyDown(Keys.Down) && _minerPos.Y < 62)
             {
                 if (_canMove)
                 {
@@ -429,6 +429,11 @@ namespace ResourcesMiner
                         }
                     }
 
+                    if (i == 0 || i == 63 || j == 63)
+                    {
+                        tile.Type = 14;
+                    }
+
                     _map[i, j] = tile;
                 }
             }
@@ -483,6 +488,9 @@ namespace ResourcesMiner
                             break;
                         case 13:
                             _map[i, j].Texture = _minedBlock;
+                            break;
+                        case 14:
+                            _map[i, j].Texture = _border;
                             break;
                     }
                 }
