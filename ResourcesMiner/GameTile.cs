@@ -6,6 +6,7 @@ namespace ResourcesMiner
     {
         public Location Location;
         public int Type;
+        public int Hardness;
         public bool HasMiner;
         public bool IsMined;
         public Texture2D Texture;
@@ -20,6 +21,24 @@ namespace ResourcesMiner
         {
             Type = type;
             HasMiner = hasMiner;
+        }
+
+        public void SetHardness()
+        {
+            if (Type == 1 || Type == 2)
+                Hardness = 0;
+            if (Type == 3)
+                Hardness = 1;
+            if (Type == 4)
+                Hardness = 3;
+            if (Type == 5 || Type == 6)
+                Hardness = 1;
+            if (Type == 7 || Type == 8)
+                Hardness = 2;
+            if (Type == 9 || Type == 10)
+                Hardness = 3;
+            if (Type == 11 || Type == 12)
+                Hardness = 3;
         }
     }
 

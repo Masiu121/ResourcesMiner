@@ -17,6 +17,7 @@ namespace ResourcesMiner
         private const int MapWidth = 64;
         private GameTile[,] _map;
         private float _fuel;
+        private float _fuelConsumption;
 
         //Movement variables
         private Vector2 _minerPos;
@@ -26,10 +27,10 @@ namespace ResourcesMiner
         private bool _moveLeft;
         private bool _moveUp;
         private bool _moveDown;
-        private int _movedBy;
-        private int _movementSpeed;
-        private int _baseMovementSpeed = 2;
-        private int _miningMovementSpeed = 1;
+        private float _movedBy;
+        private float _movementSpeed;
+        private float _baseMovementSpeed = 2;
+        private float _miningMovementSpeed = 1;
         
         //Terrain textures
         private Texture2D _grass;
@@ -140,7 +141,7 @@ namespace ResourcesMiner
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (_fuel >= 0.5f)
+            if (_fuel >= _fuelConsumption)
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.Right) && _minerPos.X < 62)
                 {
@@ -150,7 +151,7 @@ namespace ResourcesMiner
                         _moveRight = true;
                         _minerPos.X++;
                         CheckForType();
-                        _fuel -= 0.5f;
+                        _fuel -= _fuelConsumption;
                     }
 
                 }
@@ -163,7 +164,7 @@ namespace ResourcesMiner
                         _moveLeft = true;
                         _minerPos.X--;
                         CheckForType();
-                        _fuel -= 0.5f;
+                        _fuel -= _fuelConsumption;
                     }
                 }
 
@@ -175,7 +176,7 @@ namespace ResourcesMiner
                         _moveUp = true;
                         _minerPos.Y--;
                         CheckForType();
-                        _fuel -= 0.5f;
+                        _fuel -= _fuelConsumption;
                     }
                 }
 
@@ -187,14 +188,14 @@ namespace ResourcesMiner
                         _moveDown = true;
                         _minerPos.Y++;
                         CheckForType();
-                        _fuel -= 0.5f;
+                        _fuel -= _fuelConsumption;
                     }
                 }
             }
 
             if (!_canMove)
             {
-                if (_movedBy < 64)
+                if (_movedBy < 64.0f)
                 {
                     if (_moveRight)
                     {
@@ -444,6 +445,7 @@ namespace ResourcesMiner
                         tile.Type = 14;
                     }
 
+                    tile.SetHardness();
                     _map[i, j] = tile;
                 }
             }
@@ -524,67 +526,55 @@ namespace ResourcesMiner
 
         private void CheckForType()
         {
-            int type = _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type;
+            GameTile tile = _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)];
 
-            switch (type)
+            switch (tile.Type)
             {
                 case 0:
                     _movementSpeed = _baseMovementSpeed;
                     break;
                 case 1:
-                    _movementSpeed = _miningMovementSpeed;
-                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    tile.Type = 13;
                     break;
                 case 2:
-                    _movementSpeed = _miningMovementSpeed;
-                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    tile.Type = 13;
                     break;
                 case 3:
-                    _movementSpeed = _miningMovementSpeed;
-                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    tile.Type = 13;
                     break;
                 case 4:
-                    _movementSpeed = _miningMovementSpeed;
-                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    tile.Type = 13;
                     break;
                 case 5:
-                    _movementSpeed = _miningMovementSpeed;
-                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    tile.Type = 13;
                     _inventory.Add(5);
                     break;
                 case 6:
-                    _movementSpeed = _miningMovementSpeed;
-                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    tile.Type = 13;
                     _inventory.Add(6);
                     break;
                 case 7:
-                    _movementSpeed = _miningMovementSpeed;
-                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    tile.Type = 13;
                     _inventory.Add(7);
                     break;
                 case 8:
-                    _movementSpeed = _miningMovementSpeed;
-                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    tile.Type = 13;
                     _inventory.Add(8);
                     break;
                 case 9:
-                    _movementSpeed = _miningMovementSpeed;
-                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    tile.Type = 13;
                     _inventory.Add(9);
                     break;
                 case 10:
-                    _movementSpeed = _miningMovementSpeed;
-                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    tile.Type = 13;
                     _inventory.Add(10);
                     break;
                 case 11:
-                    _movementSpeed = _miningMovementSpeed;
-                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    tile.Type = 13;
                     _inventory.Add(11);
                     break;
                 case 12:
-                    _movementSpeed = _miningMovementSpeed;
-                    _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    tile.Type = 13;
                     _inventory.Add(12);
                     break;
                 case 13:
@@ -592,7 +582,28 @@ namespace ResourcesMiner
                     break;
             }
             
+            SetFuelConsumption(tile);
+            _movementSpeed = _miningMovementSpeed;
             SetTileTexture();
+        }
+
+        private void SetFuelConsumption(GameTile tile)
+        {
+            switch (tile.Hardness)
+            {
+                case 0:
+                    _miningMovementSpeed = 2;
+                    break;
+                case 1:
+                    _miningMovementSpeed = 1;
+                    break;
+                case 2:
+                    _miningMovementSpeed = 1;
+                    break;
+                case 3:
+                    _miningMovementSpeed = 1;
+                    break;
+            }
         }
     }
 }
