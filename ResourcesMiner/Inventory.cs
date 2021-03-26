@@ -4,6 +4,7 @@ namespace ResourcesMiner
     {
         private int _invLength = 20;
         public OreItem[] _inventory;
+        public int AllItems;
 
         public Inventory()
         {
@@ -13,7 +14,17 @@ namespace ResourcesMiner
         
         public void Add(int type)
         {
-            _inventory[type].Count++;
+            if (AllItems < _invLength)
+            {
+                _inventory[type].Count++;
+                AllItems++;
+            }
+        }
+
+        public void SellEverything()
+        {
+            SetOres();
+            AllItems = 0;
         }
 
         private void SetOres()

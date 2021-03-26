@@ -16,7 +16,8 @@ namespace ResourcesMiner
         private const int TileWidth = 64;
         private const int MapWidth = 64;
         private GameTile[,] _map;
-        
+        private float _fuel;
+
         //Movement variables
         private Vector2 _minerPos;
         private Vector2 _mapPos;
@@ -139,45 +140,55 @@ namespace ResourcesMiner
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Right) && _minerPos.X < 62)
+            if (_fuel >= 0.5f)
             {
-                if (_canMove)
+                if (Keyboard.GetState().IsKeyDown(Keys.Right) && _minerPos.X < 62)
                 {
-                    _canMove = false;
-                    _moveRight = true;
-                    _minerPos.X++;
-                    CheckForType();
+                    if (_canMove)
+                    {
+                        _canMove = false;
+                        _moveRight = true;
+                        _minerPos.X++;
+                        CheckForType();
+                        _fuel -= 0.5f;
+                    }
+
                 }
 
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Left) && _minerPos.X > 1)
-            {
-                if (_canMove)
+                if (Keyboard.GetState().IsKeyDown(Keys.Left) && _minerPos.X > 1)
                 {
-                    _canMove = false;
-                    _moveLeft = true;
-                    _minerPos.X--;
-                    CheckForType();
+                    if (_canMove)
+                    {
+                        _canMove = false;
+                        _moveLeft = true;
+                        _minerPos.X--;
+                        CheckForType();
+                        _fuel -= 0.5f;
+                    }
                 }
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Up) && _minerPos.Y > 0)
-            {
-                if (_canMove)
+
+                if (Keyboard.GetState().IsKeyDown(Keys.Up) && _minerPos.Y > 0)
                 {
-                    _canMove = false;
-                    _moveUp = true;
-                    _minerPos.Y--;
-                    CheckForType();
+                    if (_canMove)
+                    {
+                        _canMove = false;
+                        _moveUp = true;
+                        _minerPos.Y--;
+                        CheckForType();
+                        _fuel -= 0.5f;
+                    }
                 }
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Down) && _minerPos.Y < 62)
-            {
-                if (_canMove)
+
+                if (Keyboard.GetState().IsKeyDown(Keys.Down) && _minerPos.Y < 62)
                 {
-                    _canMove = false;
-                    _moveDown = true;
-                    _minerPos.Y++;
-                    CheckForType();
+                    if (_canMove)
+                    {
+                        _canMove = false;
+                        _moveDown = true;
+                        _minerPos.Y++;
+                        CheckForType();
+                        _fuel -= 0.5f;
+                    }
                 }
             }
 
@@ -428,7 +439,7 @@ namespace ResourcesMiner
                         }
                     }
 
-                    if (i == 0 || i == 63 || j == 63)
+                    if (i == 0 || i == MapWidth-1 || j == MapWidth-1)
                     {
                         tile.Type = 14;
                     }
@@ -501,12 +512,13 @@ namespace ResourcesMiner
             _map = new GameTile[MapWidth, MapWidth];
             GenerateMap();
             _inventory = new Inventory();
+            _fuel = 100.0f;
             _drillTier = 0;
             _chassisTier = 0;
             _bodyTier = 0;
             _mapPos.X = -MapWidth*TileWidth / 2 + _graphics.PreferredBackBufferWidth/2 + TileWidth/2;
             _mapPos.Y = 5*TileWidth + 20;
-            _minerPos = new Vector2(31, 0);
+            _minerPos = new Vector2(MapWidth/2-1, 0);
             _movementSpeed = _baseMovementSpeed;
         }
 
