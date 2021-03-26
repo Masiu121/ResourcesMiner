@@ -25,7 +25,7 @@ namespace ResourcesMiner
 
         public void SetHardness()
         {
-            if (Type == 0 || Type == 14)
+            if (Type == 0 || Type == 13)
                 Hardness = 0;
             if (Type == 1 || Type == 2)
                 Hardness = 1;

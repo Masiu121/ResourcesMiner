@@ -20,7 +20,7 @@ namespace ResourcesMiner
         //Fuel variables
         private float _fuel;
         private float _fuelConsumption;
-        private float _baseFuelConsumption = 0.2f;
+        private float _baseFuelConsumption = 0.25f;
 
         //Movement variables
         private Vector2 _minerPos;
@@ -30,10 +30,10 @@ namespace ResourcesMiner
         private bool _moveLeft;
         private bool _moveUp;
         private bool _moveDown;
-        private float _movedBy;
-        private float _movementSpeed;
-        private float _baseMovementSpeed = 2;
-        private float _miningMovementSpeed = 1;
+        private int _movedBy;
+        private int _movementSpeed;
+        private int _baseMovementSpeed = 2;
+        private int _miningMovementSpeed = 1;
         
         //Terrain textures
         private Texture2D _grass;
@@ -142,7 +142,10 @@ namespace ResourcesMiner
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit(); 
+                Exit();
+            
+            if(Keyboard.GetState().IsKeyDown(Keys.K))
+                Debug.WriteLine("Fuel: " + _fuel);
 
             if (_fuel >= _fuelConsumption)
             {
@@ -198,7 +201,7 @@ namespace ResourcesMiner
 
             if (!_canMove)
             {
-                if (_movedBy < 64.0f)
+                if (_movedBy < 64)
                 {
                     if (_moveRight)
                     {
@@ -447,8 +450,7 @@ namespace ResourcesMiner
                     {
                         tile.Type = 14;
                     }
-
-                    tile.SetHardness();
+                    
                     _map[i, j] = tile;
                 }
             }
@@ -531,6 +533,7 @@ namespace ResourcesMiner
         private void CheckForType()
         {
             GameTile tile = _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)];
+            tile.SetHardness();
 
             switch (tile.Type)
             {
@@ -539,47 +542,59 @@ namespace ResourcesMiner
                     break;
                 case 1:
                     tile.Type = 13;
+                    _movementSpeed = _miningMovementSpeed;
                     break;
                 case 2:
                     tile.Type = 13;
+                    _movementSpeed = _miningMovementSpeed;
                     break;
                 case 3:
                     tile.Type = 13;
+                    _movementSpeed = _miningMovementSpeed;
                     break;
                 case 4:
                     tile.Type = 13;
+                    _movementSpeed = _miningMovementSpeed;
                     break;
                 case 5:
                     tile.Type = 13;
                     _inventory.Add(5);
+                    _movementSpeed = _miningMovementSpeed;
                     break;
                 case 6:
                     tile.Type = 13;
                     _inventory.Add(6);
+                    _movementSpeed = _miningMovementSpeed;
                     break;
                 case 7:
                     tile.Type = 13;
                     _inventory.Add(7);
+                    _movementSpeed = _miningMovementSpeed;
                     break;
                 case 8:
                     tile.Type = 13;
                     _inventory.Add(8);
+                    _movementSpeed = _miningMovementSpeed;
                     break;
                 case 9:
                     tile.Type = 13;
                     _inventory.Add(9);
+                    _movementSpeed = _miningMovementSpeed;
                     break;
                 case 10:
                     tile.Type = 13;
                     _inventory.Add(10);
+                    _movementSpeed = _miningMovementSpeed;
                     break;
                 case 11:
                     tile.Type = 13;
                     _inventory.Add(11);
+                    _movementSpeed = _miningMovementSpeed;
                     break;
                 case 12:
                     tile.Type = 13;
                     _inventory.Add(12);
+                    _movementSpeed = _miningMovementSpeed;
                     break;
                 case 13:
                     _movementSpeed = _baseMovementSpeed;
@@ -587,7 +602,6 @@ namespace ResourcesMiner
             }
             
             SetFuelConsumption(tile);
-            _movementSpeed = _miningMovementSpeed;
             SetTileTexture();
         }
 
@@ -602,15 +616,17 @@ namespace ResourcesMiner
                     _fuelConsumption = 0.5f;
                     break;
                 case 2:
-                    _miningMovementSpeed = 0.5f;
+                    _fuelConsumption = 1.0f;
                     break;
                 case 3:
-                    _miningMovementSpeed = 1.0f;
+                    _fuelConsumption = 2.0f;
                     break;
                 case 4:
-                    _miningMovementSpeed = 2.0f;
+                    _fuelConsumption = 2.0f;
                     break;
             }
+            
+            Debug.WriteLine("Hardness: " + tile.Hardness);
         }
     }
 }
