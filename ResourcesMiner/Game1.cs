@@ -10,10 +10,11 @@ namespace ResourcesMiner
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private const int TileWidth = 64;
-
-        private const int MapWidth = 64;
         
+        //Main game variables
+        private Inventory _inventory;
+        private const int TileWidth = 64;
+        private const int MapWidth = 64;
         private GameTile[,] _map;
         
         //Movement variables
@@ -179,8 +180,6 @@ namespace ResourcesMiner
                     CheckForType();
                 }
             }
-            
-            Debug.WriteLine("X: " + _minerPos.X + ", Y: " + _minerPos.Y);
 
             if (!_canMove)
             {
@@ -501,6 +500,7 @@ namespace ResourcesMiner
         {
             _map = new GameTile[MapWidth, MapWidth];
             GenerateMap();
+            _inventory = new Inventory();
             _drillTier = 0;
             _chassisTier = 0;
             _bodyTier = 0;
@@ -538,34 +538,42 @@ namespace ResourcesMiner
                 case 5:
                     _movementSpeed = _miningMovementSpeed;
                     _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    _inventory.Add(5);
                     break;
                 case 6:
                     _movementSpeed = _miningMovementSpeed;
                     _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    _inventory.Add(6);
                     break;
                 case 7:
                     _movementSpeed = _miningMovementSpeed;
                     _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    _inventory.Add(7);
                     break;
                 case 8:
                     _movementSpeed = _miningMovementSpeed;
                     _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    _inventory.Add(8);
                     break;
                 case 9:
                     _movementSpeed = _miningMovementSpeed;
                     _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    _inventory.Add(9);
                     break;
                 case 10:
                     _movementSpeed = _miningMovementSpeed;
                     _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    _inventory.Add(10);
                     break;
                 case 11:
                     _movementSpeed = _miningMovementSpeed;
                     _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    _inventory.Add(11);
                     break;
                 case 12:
                     _movementSpeed = _miningMovementSpeed;
                     _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)].Type = 13;
+                    _inventory.Add(12);
                     break;
                 case 13:
                     _movementSpeed = _baseMovementSpeed;

@@ -3,7 +3,7 @@ namespace ResourcesMiner
     public class Inventory
     {
         private int _invLength = 20;
-        private OreItem[] _inventory;
+        public OreItem[] _inventory;
 
         public Inventory()
         {
