@@ -14,7 +14,7 @@ namespace ResourcesMiner
         //Main game variables
         private Inventory _inventory;
         private const int TileWidth = 64;
-        private const int MapWidth = 64;
+        private const int MapWidth = 384;
         private GameTile[,] _map;
         
         //Fuel variables
@@ -144,9 +144,32 @@ namespace ResourcesMiner
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            if (Keyboard.GetState().IsKeyDown(Keys.Q))
+            {
+                Debug.WriteLine("------------------------------------------");
+                Debug.WriteLine("Fuel: " + _fuel);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.R))
+            {
+                Debug.WriteLine("------------------------------------------");
+                Debug.WriteLine("Pos: X: " + _minerPos.X + ", Y: " + _minerPos.Y);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.E))
+            {
+                Debug.WriteLine("------------------------------------------");
+                Debug.WriteLine("Coal: " + _inventory._inventory[5].Count);
+                Debug.WriteLine("Copper: " + _inventory._inventory[7].Count);
+                Debug.WriteLine("Iron: " + _inventory._inventory[8].Count);
+                Debug.WriteLine("Apatite: " + _inventory._inventory[9].Count);
+                Debug.WriteLine("Diamond: " + _inventory._inventory[11].Count);
+                Debug.WriteLine("Emerald: " + _inventory._inventory[12].Count);
+            }
+
             if (_fuel >= _fuelConsumption)
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.Right) && _minerPos.X < 62)
+                if (Keyboard.GetState().IsKeyDown(Keys.Right) && _minerPos.X < MapWidth-2)
                 {
                     if (_canMove)
                     {
@@ -183,7 +206,7 @@ namespace ResourcesMiner
                     }
                 }
 
-                if (Keyboard.GetState().IsKeyDown(Keys.Down) && _minerPos.Y < 62)
+                if (Keyboard.GetState().IsKeyDown(Keys.Down) && _minerPos.Y < MapWidth-2)
                 {
                     if (_canMove)
                     {
@@ -356,17 +379,17 @@ namespace ResourcesMiner
                         }
                     }
 
-                    if (j > 30)
+                    if (j > 320)
                     {
                         tile = new GameTile(4, new Location(i, j));
-                        if (j == 31)
+                        if (j == 321)
                         {
                             chance = rand.NextDouble();
                             if (chance < 0.8)
                                 tile = new GameTile(3, new Location(i, j));
                         }
 
-                        if (j == 32)
+                        if (j == 322)
                         {
                             chance = rand.NextDouble();
                             if (chance < 0.3)
@@ -458,9 +481,9 @@ namespace ResourcesMiner
 
         private void SetTileTexture()
         {
-            for(int i = 0; i < TileWidth; i++)
+            for(int i = 0; i < MapWidth; i++)
             {
-                for (int j = 0; j < TileWidth; j++)
+                for (int j = 0; j < MapWidth; j++)
                 {
                     switch (_map[i, j].Type)
                     {
@@ -625,8 +648,6 @@ namespace ResourcesMiner
                     _fuelConsumption = 2.0f;
                     break;
             }
-            
-            Debug.WriteLine("Hardness: " + tile.Hardness);
         }
     }
 }
