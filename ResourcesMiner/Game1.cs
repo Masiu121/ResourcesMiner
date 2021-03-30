@@ -16,6 +16,7 @@ namespace ResourcesMiner
         private const int TileWidth = 64;
         private const int MapWidth = 384;
         private GameTile[,] _map;
+        private int _renderDistance = 12;
         
         //Fuel variables
         private float _fuel;
@@ -34,6 +35,28 @@ namespace ResourcesMiner
         private int _movementSpeed;
         private int _baseMovementSpeed = 2;
         private int _miningMovementSpeed = 1;
+        
+        //Ores variables
+        private double _coalChance = 0.1;
+        private double _copperChance = 0.1;
+        private double _ironChance = 0.1;
+        private double _apatiteChance = 0.1;
+        private double _diamondChance = 0.05;
+        private double _emeraldChance = 0.05;
+        private int _coalMin = 2;
+        private int _coalMax = 60;
+        private int _copperMin = 40;
+        private int _copperMax = 80;
+        private int _ironMin = 60;
+        private int _ironMax = 140;
+        private int _apatiteMin = 100;
+        private int _apatiteMax = 300;
+        private int _diamondMin = 280;
+        private int _diamondMax = 360;
+        private int _emeraldMin = 300;
+        private int _emeraldMax = 384;
+        private int _stoneLevel = 3;
+        private int _deepslateLevel = 280;
         
         //Terrain textures
         private Texture2D _grass;
@@ -272,8 +295,13 @@ namespace ResourcesMiner
             {
                 for (int j = 0; j < MapWidth; j++)
                 {
-                    if(_map[i, j].Texture != null)
-                        _spriteBatch.Draw(_map[i, j].Texture, new Rectangle(Convert.ToInt32(_mapPos.X+i*TileWidth), Convert.ToInt32(_mapPos.Y+j*TileWidth), TileWidth, TileWidth), Color.White);
+                    if (i > _minerPos.X-_renderDistance && i < _minerPos.X+_renderDistance && j > _minerPos.Y-_renderDistance && j < _minerPos.Y+_renderDistance)
+                    {
+                        if (_map[i, j].Texture != null)
+                            _spriteBatch.Draw(_map[i, j].Texture,
+                                new Rectangle(Convert.ToInt32(_mapPos.X + i * TileWidth),
+                                    Convert.ToInt32(_mapPos.Y + j * TileWidth), TileWidth, TileWidth), Color.White);
+                    }
                 }
             }
             
@@ -368,10 +396,10 @@ namespace ResourcesMiner
                     if (j > 1)
                         tile = new GameTile(2, new Location(i, j));
                     
-                    if (j > 3)
+                    if (j > _stoneLevel)
                     {
                         tile = new GameTile(3, new Location(i, j));
-                        if (j == 4)
+                        if (j == _stoneLevel+1)
                         {
                             chance = rand.NextDouble();
                             if (chance < 0.5)
@@ -379,17 +407,17 @@ namespace ResourcesMiner
                         }
                     }
 
-                    if (j > 320)
+                    if (j > _deepslateLevel)
                     {
                         tile = new GameTile(4, new Location(i, j));
-                        if (j == 321)
+                        if (j == _deepslateLevel+1)
                         {
                             chance = rand.NextDouble();
                             if (chance < 0.8)
                                 tile = new GameTile(3, new Location(i, j));
                         }
 
-                        if (j == 322)
+                        if (j == _deepslateLevel+2)
                         {
                             chance = rand.NextDouble();
                             if (chance < 0.3)
@@ -400,12 +428,12 @@ namespace ResourcesMiner
                     //Ores generation
                     if (tile != null)
                     {
-                        if (j > 1 && j < 16)
+                        if (j > _coalMin && j < _coalMax)
                         {
                             chance = rand.NextDouble();
-                            if (chance < 0.1)
+                            if (chance < _coalChance)
                             {
-                                if (j < 4)
+                                if (j < _stoneLevel+1)
                                 {
                                     tile.Type = 5;
                                 }
@@ -416,30 +444,30 @@ namespace ResourcesMiner
                             }
                         }
 
-                        if (j > 9 && j < 26)
+                        if (j > _copperMin && j < _copperMax)
                         {
                             chance = rand.NextDouble();
-                            if (chance < 0.1)
+                            if (chance < _copperChance)
                             {
                                 tile.Type = 7;
                             }
                         }
 
-                        if (j > 14 && j < 31)
+                        if (j > _ironMin && j < _ironMax)
                         {
                             chance = rand.NextDouble();
-                            if (chance < 0.05)
+                            if (chance < _ironChance)
                             {
                                 tile.Type = 8;
                             }
                         }
 
-                        if (j > 24 && j < 41)
+                        if (j > _apatiteMin && j < _apatiteMax)
                         {
                             chance = rand.NextDouble();
-                            if (chance < 0.05)
+                            if (chance < _apatiteChance)
                             {
-                                if (j < 32)
+                                if (j < _deepslateLevel+2)
                                 {
                                     tile.Type = 9;
                                 }
@@ -450,19 +478,19 @@ namespace ResourcesMiner
                             }
                         }
 
-                        if (j > 34 && j < 56)
+                        if (j > _diamondMin && j < _diamondMax)
                         {
                             chance = rand.NextDouble();
-                            if (chance < 0.02)
+                            if (chance < _diamondChance)
                             {
                                 tile.Type = 11;
                             }
                         }
 
-                        if (j > 44 && j < 65)
+                        if (j > _emeraldMin && j < _emeraldMax)
                         {
                             chance = rand.NextDouble();
-                            if (chance < 0.02)
+                            if (chance < _emeraldChance)
                             {
                                 tile.Type = 12;
                             }
