@@ -21,6 +21,7 @@ namespace ResourcesMiner
         //Heat variables
         private decimal _heatMax;
         private decimal _heatPercent;
+        private decimal _heatStage;
         
         //Durability variables
         private decimal _health;
@@ -183,6 +184,7 @@ namespace ResourcesMiner
                 Debug.WriteLine("Pos: X: " + _minerPos.X + ", Y: " + _minerPos.Y);
                 Debug.WriteLine("Fuel: " + _fuel);
                 Debug.WriteLine("Health: " + _health);
+                Debug.WriteLine("Heat: " + _heatPercent);
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.E))
@@ -195,6 +197,7 @@ namespace ResourcesMiner
                 Debug.WriteLine("Diamond: " + _inventory._inventory[11].Count);
                 Debug.WriteLine("Emerald: " + _inventory._inventory[12].Count);
             }
+
             if (CanMove())
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.Right) && _minerPos.X < MapWidth - 2)
@@ -663,6 +666,7 @@ namespace ResourcesMiner
                     break;
             }
             
+            SetHeatPercent();
             SetFuelConsumption(tile);
             SetTileTexture();
         }
@@ -689,6 +693,13 @@ namespace ResourcesMiner
                     _fuelConsumption = 2.0m;
                     break;
             }
+        }
+
+        private void SetHeatPercent()
+        {
+            _heatStage = Convert.ToDecimal(MapWidth) / 5.0m;
+            _heatMax = Convert.ToDecimal(_coolerTier)+1 * Convert.ToDecimal(_heatStage);
+            _heatPercent = Convert.ToDecimal(_minerPos.Y) / _heatMax;
         }
 
         private bool CanMove()
