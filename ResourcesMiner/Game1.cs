@@ -17,11 +17,20 @@ namespace ResourcesMiner
         private const int MapWidth = 384;
         private GameTile[,] _map;
         private int _renderDistance = 12;
+
+        //Heat variables
+        private decimal _heatMax;
+        private decimal _heatPercent;
+        
+        //Durability variables
+        private decimal _health;
+        private decimal _healthDecreasion;
+        private decimal _baseHealthDecreasion = 0.2m;
         
         //Fuel variables
-        private float _fuel;
-        private float _fuelConsumption;
-        private float _baseFuelConsumption = 0.25f;
+        private decimal _fuel;
+        private decimal _fuelConsumption;
+        private decimal _baseFuelConsumption = 0.25m;
 
         //Movement variables
         private Vector2 _minerPos;
@@ -78,6 +87,7 @@ namespace ResourcesMiner
         private int _drillTier;
         private int _chassisTier;
         private int _bodyTier;
+        private int _coolerTier;
         
         //Base textures
         private Texture2D _drillBase;
@@ -170,13 +180,9 @@ namespace ResourcesMiner
             if (Keyboard.GetState().IsKeyDown(Keys.Q))
             {
                 Debug.WriteLine("------------------------------------------");
-                Debug.WriteLine("Fuel: " + _fuel);
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.R))
-            {
-                Debug.WriteLine("------------------------------------------");
                 Debug.WriteLine("Pos: X: " + _minerPos.X + ", Y: " + _minerPos.Y);
+                Debug.WriteLine("Fuel: " + _fuel);
+                Debug.WriteLine("Health: " + _health);
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.E))
@@ -189,10 +195,9 @@ namespace ResourcesMiner
                 Debug.WriteLine("Diamond: " + _inventory._inventory[11].Count);
                 Debug.WriteLine("Emerald: " + _inventory._inventory[12].Count);
             }
-
-            if (_fuel >= _fuelConsumption)
+            if (CanMove())
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.Right) && _minerPos.X < MapWidth-2)
+                if (Keyboard.GetState().IsKeyDown(Keys.Right) && _minerPos.X < MapWidth - 2)
                 {
                     if (_canMove)
                     {
@@ -201,8 +206,8 @@ namespace ResourcesMiner
                         _minerPos.X++;
                         CheckForType();
                         _fuel -= _fuelConsumption;
+                        _health -= _healthDecreasion;
                     }
-
                 }
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Left) && _minerPos.X > 1)
@@ -214,6 +219,7 @@ namespace ResourcesMiner
                         _minerPos.X--;
                         CheckForType();
                         _fuel -= _fuelConsumption;
+                        _health -= _healthDecreasion;
                     }
                 }
 
@@ -226,10 +232,11 @@ namespace ResourcesMiner
                         _minerPos.Y--;
                         CheckForType();
                         _fuel -= _fuelConsumption;
+                        _health -= _healthDecreasion;
                     }
                 }
 
-                if (Keyboard.GetState().IsKeyDown(Keys.Down) && _minerPos.Y < MapWidth-2)
+                if (Keyboard.GetState().IsKeyDown(Keys.Down) && _minerPos.Y < MapWidth - 2)
                 {
                     if (_canMove)
                     {
@@ -238,6 +245,7 @@ namespace ResourcesMiner
                         _minerPos.Y++;
                         CheckForType();
                         _fuel -= _fuelConsumption;
+                        _health -= _healthDecreasion;
                     }
                 }
             }
@@ -570,11 +578,14 @@ namespace ResourcesMiner
             _map = new GameTile[MapWidth, MapWidth];
             GenerateMap();
             _inventory = new Inventory();
-            _fuel = 100.0f;
+            _fuel = 100.0m;
+            _health = 100.0m;
             _fuelConsumption = _baseFuelConsumption;
+            _healthDecreasion = _baseHealthDecreasion;
             _drillTier = 0;
             _chassisTier = 0;
             _bodyTier = 0;
+            _coolerTier = 0;
             _mapPos.X = -MapWidth*TileWidth / 2 + _graphics.PreferredBackBufferWidth/2 + TileWidth/2;
             _mapPos.Y = 5*TileWidth + 20;
             _minerPos = new Vector2(MapWidth/2-1, 0);
@@ -662,20 +673,29 @@ namespace ResourcesMiner
             {
                 case 0:
                     _fuelConsumption = _baseFuelConsumption;
+                    _healthDecreasion = _baseHealthDecreasion;
                     break;
                 case 1:
-                    _fuelConsumption = 0.5f;
+                    _fuelConsumption = 0.5m;
+                    _healthDecreasion = 0.5m;
                     break;
                 case 2:
-                    _fuelConsumption = 1.0f;
+                    _fuelConsumption = 1.0m;
                     break;
                 case 3:
-                    _fuelConsumption = 2.0f;
+                    _fuelConsumption = 2.0m;
                     break;
                 case 4:
-                    _fuelConsumption = 2.0f;
+                    _fuelConsumption = 2.0m;
                     break;
             }
+        }
+
+        private bool CanMove()
+        {
+            if (_fuel >= _fuelConsumption && _health >= _healthDecreasion)
+                return true;
+            return false;
         }
     }
 }
