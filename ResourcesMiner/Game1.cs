@@ -22,6 +22,7 @@ namespace ResourcesMiner
         private decimal _heatMax;
         private decimal _heatPercent;
         private decimal _heatStage;
+        private int _timeToBurn;
         
         //Durability variables
         private decimal _health;
@@ -289,6 +290,19 @@ namespace ResourcesMiner
                     _moveUp = false;
                     _moveDown = false;
                     _movedBy = 0;
+                }
+            }
+
+            if (_heatPercent >= 1)
+            {
+                if (_timeToBurn <= 0)
+                {
+                    _timeToBurn = 50;
+                    _health--;
+                }
+                else
+                {
+                    _timeToBurn--;
                 }
             }
 
