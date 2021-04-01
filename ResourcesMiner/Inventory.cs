@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace ResourcesMiner
 {
     public class Inventory

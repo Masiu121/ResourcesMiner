@@ -17,6 +17,7 @@ namespace ResourcesMiner
         private const int MapWidth = 384;
         private GameTile[,] _map;
         private int _renderDistance = 12;
+        private decimal _money;
 
         //Heat variables
         private decimal _heatMax;
@@ -720,6 +721,17 @@ namespace ResourcesMiner
         {
             if (_fuel >= _fuelConsumption && _health >= _healthDecreasion)
                 return true;
+            return false;
+        }
+
+        private bool SpendMoney(decimal money)
+        {
+            if (_money >= money)
+            {
+                _money -= money;
+                return true;
+            }
+
             return false;
         }
     }
