@@ -32,6 +32,10 @@ namespace ResourcesMiner
         
         //Fuel variables
         private decimal _fuel;
+        private decimal _fuelMax;
+        private decimal _fuelRefill;
+        private int _timeToRefill;
+        private bool _fuelRefilling;
         private decimal _fuelConsumption;
         private decimal _baseFuelConsumption = 0.25m;
 
@@ -304,6 +308,27 @@ namespace ResourcesMiner
                 else
                 {
                     _timeToBurn--;
+                }
+            }
+
+            if (_fuelRefilling)
+            {
+                if (_fuel >= _fuelMax - _fuelRefill)
+                {
+                    _fuel = _fuelMax;
+                    _fuelRefilling = false;
+                }
+                else
+                {
+                    if (_timeToRefill <= 0)
+                    {
+                        _fuel += _fuelRefill;
+                        _timeToRefill = 20;
+                    }
+                    else
+                    {
+                        _timeToRefill++;
+                    }
                 }
             }
 
@@ -604,6 +629,11 @@ namespace ResourcesMiner
             _chassisTier = 0;
             _bodyTier = 0;
             _coolerTier = 0;
+            _fuelRefill = 2;
+            _fuelMax = 100;
+            _timeToRefill = 50;
+            _fuel = _fuelMax;
+            _fuelRefilling = false;
             _mapPos.X = -MapWidth*TileWidth / 2 + _graphics.PreferredBackBufferWidth/2 + TileWidth/2;
             _mapPos.Y = 5*TileWidth + 20;
             _minerPos = new Vector2(MapWidth/2-1, 0);
