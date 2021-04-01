@@ -27,7 +27,9 @@ namespace ResourcesMiner
         
         //Durability variables
         private decimal _health;
+        private decimal _healthMax;
         private decimal _healthDecreasion;
+        private bool _healthRegen;
         private decimal _baseHealthDecreasion = 0.2m;
         
         //Fuel variables
@@ -332,6 +334,12 @@ namespace ResourcesMiner
                 }
             }
 
+            if (_healthRegen)
+            {
+                _health = _healthMax;
+                _healthRegen = false;
+            }
+
             base.Update(gameTime);
         }
 
@@ -618,25 +626,35 @@ namespace ResourcesMiner
 
         private void StartGame()
         {
+            //Map
             _map = new GameTile[MapWidth, MapWidth];
             GenerateMap();
-            _inventory = new Inventory();
-            _fuel = 100.0m;
-            _health = 100.0m;
-            _fuelConsumption = _baseFuelConsumption;
-            _healthDecreasion = _baseHealthDecreasion;
+            _mapPos.X = -MapWidth*TileWidth / 2 + _graphics.PreferredBackBufferWidth/2 + TileWidth/2;
+            _mapPos.Y = 5*TileWidth + 20;
+            _minerPos = new Vector2(MapWidth/2-1, 0);
+            
+            //Tiers
             _drillTier = 0;
             _chassisTier = 0;
             _bodyTier = 0;
             _coolerTier = 0;
-            _fuelRefill = 2;
+            
+            //Fuel
             _fuelMax = 100;
-            _timeToRefill = 50;
             _fuel = _fuelMax;
+            _fuelRefill = 2;
+            _timeToRefill = 50;
             _fuelRefilling = false;
-            _mapPos.X = -MapWidth*TileWidth / 2 + _graphics.PreferredBackBufferWidth/2 + TileWidth/2;
-            _mapPos.Y = 5*TileWidth + 20;
-            _minerPos = new Vector2(MapWidth/2-1, 0);
+            _fuelConsumption = _baseFuelConsumption;
+            
+            //Health
+            _healthMax = 100;
+            _health = _healthMax;
+            _healthRegen = false;
+            _healthDecreasion = _baseHealthDecreasion;
+
+            //Miner
+            _inventory = new Inventory();
             _movementSpeed = _baseMovementSpeed;
         }
 
