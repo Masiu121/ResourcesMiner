@@ -442,7 +442,7 @@ namespace ResourcesMiner
             //Map
             _map = new Map(MapWidth);
             GenerateMap();
-            _minerPos = new Vector2(MapWidth/2-1, 63);
+            _minerPos = new Vector2(MapWidth/2-1, 300);
             _mapPos.X = -MapWidth*TileWidth / 2 + _graphics.PreferredBackBufferWidth/2 + TileWidth/2;
             _mapPos.Y = -(_minerPos.Y-5)*TileWidth + 20;
             
@@ -631,10 +631,10 @@ namespace ResourcesMiner
             _map.AddComponent(new GameTile(10), 297, 316, 0.05);
             
             //Diamond
-            _map.AddComponent(new GameTile(11), 286, 364, 0.02);
+            _map.AddComponent(new GameTile(11), 304, 364, 0.02);
             
             //Emerald
-            _map.AddComponent(new GameTile(12), 216, 384, 0.02);
+            _map.AddComponent(new GameTile(12), 316, 384, 0.02);
         }
 
         private void SetComponentTexture()
