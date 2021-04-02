@@ -621,7 +621,7 @@ namespace ResourcesMiner
             _map.AddComponent(new GameTile(6), 68, 96, 0.1);
             
             //Copper
-            _map.AddComponent(new GameTile(7), 64, 164, 0.08);
+            _map.AddComponent(new GameTile(7), 84, 164, 0.08);
             
             //Iron
             _map.AddComponent(new GameTile(8), 104, 264, 0.07);
