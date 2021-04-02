@@ -619,6 +619,22 @@ namespace ResourcesMiner
             //Coal
             _map.AddComponent(new GameTile(5), 66, 67, 0.1);
             _map.AddComponent(new GameTile(6), 68, 96, 0.1);
+            
+            //Copper
+            _map.AddComponent(new GameTile(7), 64, 164, 0.08);
+            
+            //Iron
+            _map.AddComponent(new GameTile(8), 104, 264, 0.07);
+            
+            //Apatite
+            _map.AddComponent(new GameTile(9), 216, 296, 0.05);
+            _map.AddComponent(new GameTile(10), 297, 316, 0.05);
+            
+            //Diamond
+            _map.AddComponent(new GameTile(11), 286, 364, 0.02);
+            
+            //Emerald
+            _map.AddComponent(new GameTile(12), 216, 384, 0.02);
         }
 
         private void SetComponentTexture()
