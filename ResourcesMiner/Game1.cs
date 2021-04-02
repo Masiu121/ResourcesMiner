@@ -15,7 +15,6 @@ namespace ResourcesMiner
         private Inventory _inventory;
         private const int TileWidth = 64;
         private const int MapWidth = 384;
-        private GameTile[,] _map;
         private int _renderDistance = 12;
         private decimal _money;
 
@@ -54,7 +53,8 @@ namespace ResourcesMiner
         private int _baseMovementSpeed = 2;
         private int _miningMovementSpeed = 1;
         
-        //Ores variables
+        //Map variables
+        private Map _map;
         private double _coalChance = 0.1;
         private double _copperChance = 0.1;
         private double _ironChance = 0.1;
@@ -177,7 +177,7 @@ namespace ResourcesMiner
             _chassisTier5 = Content.Load<Texture2D>("Components/Tier 5/chassisTier5");
             _bodyTier5 = Content.Load<Texture2D>("Components/Tier 5/bodyTier5");
             ApplyTextures();
-            SetTileTexture();
+            SetComponentTexture();
         }
 
         protected override void Update(GameTime gameTime)
@@ -234,7 +234,7 @@ namespace ResourcesMiner
                     }
                 }
 
-                if (Keyboard.GetState().IsKeyDown(Keys.Up) && _minerPos.Y > 0)
+                if (Keyboard.GetState().IsKeyDown(Keys.Up) && _minerPos.Y > 63)
                 {
                     if (_canMove)
                     {
@@ -356,8 +356,8 @@ namespace ResourcesMiner
                 {
                     if (i > _minerPos.X-_renderDistance && i < _minerPos.X+_renderDistance && j > _minerPos.Y-_renderDistance && j < _minerPos.Y+_renderDistance)
                     {
-                        if (_map[i, j].Texture != null)
-                            _spriteBatch.Draw(_map[i, j].Texture,
+                        if (_map.map[i, j].Texture != null)
+                            _spriteBatch.Draw(_map.map[i, j].Texture,
                                 new Rectangle(Convert.ToInt32(_mapPos.X + i * TileWidth),
                                     Convert.ToInt32(_mapPos.Y + j * TileWidth), TileWidth, TileWidth), Color.White);
                     }
@@ -437,74 +437,14 @@ namespace ResourcesMiner
             }
         }
 
-        
-
-        private void SetTileTexture()
-        {
-            for(int i = 0; i < MapWidth; i++)
-            {
-                for (int j = 0; j < MapWidth; j++)
-                {
-                    switch (_map[i, j].Type)
-                    {
-                        case 0:
-                            _map[i, j].Texture = null;
-                            break;
-                        case 1:
-                            _map[i, j].Texture = _grass;
-                            break;
-                        case 2:
-                            _map[i, j].Texture = _dirt;
-                            break;
-                        case 3:
-                            _map[i, j].Texture = _stone;
-                            break;
-                        case 4:
-                            _map[i, j].Texture = _deepslate;
-                            break;
-                        case 5:
-                            _map[i, j].Texture = _coalDirt;
-                            break;
-                        case 6:
-                            _map[i, j].Texture = _coal;
-                            break;
-                        case 7:
-                            _map[i, j].Texture = _copper;
-                            break;
-                        case 8:
-                            _map[i, j].Texture = _iron;
-                            break;
-                        case 9:
-                            _map[i, j].Texture = _apatite;
-                            break;
-                        case 10:
-                            _map[i, j].Texture = _apatiteDeepslate;
-                            break;
-                        case 11:
-                            _map[i, j].Texture = _diamond;
-                            break;
-                        case 12:
-                            _map[i, j].Texture = _emerald;
-                            break;
-                        case 13:
-                            _map[i, j].Texture = _minedBlock;
-                            break;
-                        case 14:
-                            _map[i, j].Texture = _border;
-                            break;
-                    }
-                }
-            }
-        }
-
         private void StartGame()
         {
             //Map
-            _map = new GameTile[MapWidth, MapWidth];
-            //GenerateMap();
+            _map = new Map(MapWidth);
+            GenerateMap();
+            _minerPos = new Vector2(MapWidth/2-1, 63);
             _mapPos.X = -MapWidth*TileWidth / 2 + _graphics.PreferredBackBufferWidth/2 + TileWidth/2;
-            _mapPos.Y = 5*TileWidth + 20;
-            _minerPos = new Vector2(MapWidth/2-1, 0);
+            _mapPos.Y = -(_minerPos.Y-5)*TileWidth + 20;
             
             //Tiers
             _drillTier = 0;
@@ -533,7 +473,7 @@ namespace ResourcesMiner
 
         private void CheckForType()
         {
-            GameTile tile = _map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)];
+            GameTile tile = _map.map[Convert.ToInt32(_minerPos.X), Convert.ToInt32(_minerPos.Y)];
             tile.SetHardness();
 
             switch (tile.Type)
@@ -602,9 +542,9 @@ namespace ResourcesMiner
                     break;
             }
             
+            SetComponentTexture();
             SetHeatPercent();
             SetFuelConsumption(tile);
-            SetTileTexture();
         }
 
         private void SetFuelConsumption(GameTile tile)
@@ -654,6 +594,94 @@ namespace ResourcesMiner
             }
 
             return false;
+        }
+
+        private void AddMapComponents()
+        {
+            //Air
+            _map.AddComponent(new GameTile(0), 0, 63, 1);
+            
+            //Grass
+            _map.AddComponent(new GameTile(1), 64, 64, 1);
+            
+            //Dirt
+            _map.AddComponent(new GameTile(2), 65, 67, 1);
+            
+            //Stone
+            _map.AddComponent(new GameTile(3), 68, 296, 1);
+            _map.AddComponent(new GameTile(3), 67, 67, 0.5);
+            
+            //Deepslate
+            _map.AddComponent(new GameTile(4), 297, 384, 1);
+            _map.AddComponent(new GameTile(4), 296, 296, 0.7);
+            _map.AddComponent(new GameTile(4), 295, 295, 0.3);
+            
+            //Coal
+            _map.AddComponent(new GameTile(5), 66, 67, 0.1);
+            _map.AddComponent(new GameTile(6), 68, 96, 0.1);
+        }
+
+        private void SetComponentTexture()
+        {
+            GameTile tile;
+            for (int i = 0; i < MapWidth; i++)
+            {
+                for (int j = 0; j < MapWidth; j++)
+                {
+                    tile = _map.map[i, j];
+                    switch (tile.Type)
+                    {
+                        case 1:
+                            tile.Texture = _grass;
+                            break;
+                        case 2:
+                            tile.Texture = _dirt;
+                            break;
+                        case 3:
+                            tile.Texture = _stone;
+                            break;
+                        case 4:
+                            tile.Texture = _deepslate;
+                            break;
+                        case 5:
+                            tile.Texture = _coalDirt;
+                            break;
+                        case 6:
+                            tile.Texture = _coal;
+                            break;
+                        case 7:
+                            tile.Texture = _copper;
+                            break;
+                        case 8:
+                            tile.Texture = _iron;
+                            break;
+                        case 9:
+                            tile.Texture = _apatite;
+                            break;
+                        case 10:
+                            tile.Texture = _apatiteDeepslate;
+                            break;
+                        case 11:
+                            tile.Texture = _diamond;
+                            break;
+                        case 12:
+                            tile.Texture = _emerald;
+                            break;
+                        case 13:
+                            tile.Texture = _minedBlock;
+                            break;
+                        case 14:
+                            tile.Texture = _border;
+                            break;
+                    }
+                }
+            }
+        }
+
+        private void GenerateMap()
+        {
+            AddMapComponents();
+            _map.GenerateMap();
         }
     }
 }

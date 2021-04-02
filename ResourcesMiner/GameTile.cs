@@ -4,23 +4,14 @@ namespace ResourcesMiner
 {
     public class GameTile
     {
-        public Location Location;
         public int Type;
         public int Hardness;
-        public bool HasMiner;
         public bool IsMined;
         public Texture2D Texture;
 
-        public GameTile(int type, Location location)
+        public GameTile(int type)
         {
             Type = type;
-            Location = location;
-        }
-
-        public GameTile(int type, bool hasMiner)
-        {
-            Type = type;
-            HasMiner = hasMiner;
         }
 
         public void SetHardness()
