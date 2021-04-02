@@ -13,9 +13,6 @@ namespace ResourcesMiner
         
         //Main game variables
         private Inventory _inventory;
-        private const int TileWidth = 64;
-        private const int MapWidth = 384;
-        private int _renderDistance = 12;
         private decimal _money;
 
         //Heat variables
@@ -55,27 +52,10 @@ namespace ResourcesMiner
         
         //Map variables
         private Map _map;
-        private double _coalChance = 0.1;
-        private double _copperChance = 0.1;
-        private double _ironChance = 0.1;
-        private double _apatiteChance = 0.1;
-        private double _diamondChance = 0.05;
-        private double _emeraldChance = 0.05;
-        private int _coalMin = 2;
-        private int _coalMax = 60;
-        private int _copperMin = 40;
-        private int _copperMax = 80;
-        private int _ironMin = 60;
-        private int _ironMax = 140;
-        private int _apatiteMin = 100;
-        private int _apatiteMax = 300;
-        private int _diamondMin = 280;
-        private int _diamondMax = 360;
-        private int _emeraldMin = 300;
-        private int _emeraldMax = 384;
-        private int _stoneLevel = 3;
-        private int _deepslateLevel = 280;
-        
+        private const int MapWidth = 384;
+        private const int TileWidth = 64;
+        private int _renderDistance = 12;
+
         //Terrain textures
         private Texture2D _grass;
         private Texture2D _dirt;
@@ -442,7 +422,7 @@ namespace ResourcesMiner
             //Map
             _map = new Map(MapWidth);
             GenerateMap();
-            _minerPos = new Vector2(MapWidth/2-1, 300);
+            _minerPos = new Vector2(MapWidth/2-1, 63);
             _mapPos.X = -MapWidth*TileWidth / 2 + _graphics.PreferredBackBufferWidth/2 + TileWidth/2;
             _mapPos.Y = -(_minerPos.Y-5)*TileWidth + 20;
             
