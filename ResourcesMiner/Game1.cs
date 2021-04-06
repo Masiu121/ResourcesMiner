@@ -445,7 +445,7 @@ namespace ResourcesMiner
         private void StartGame()
         {
             //Map
-            _map = new Map(MapWidth);
+            _map = new Map(MapWidth, MapWidth);
             GenerateMap();
             _minerPos = new Vector2(MapWidth/2-1, 63);
             _mapPos.X = -MapWidth*TileWidth / 2 + _graphics.PreferredBackBufferWidth/2 + TileWidth/2;

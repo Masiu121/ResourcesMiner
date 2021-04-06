@@ -8,12 +8,14 @@ namespace ResourcesMiner
         public GameTile[,] map;
         public List<MapComponent> _mapComponents;
         private int _mapWidth;
-        
-        public Map(int mapWidth)
+        private int _mapHeight;
+
+        public Map(int mapWidth, int mapHeight)
         {
-            map = new GameTile[mapWidth, mapWidth];
+            map = new GameTile[mapWidth, mapHeight];
             _mapComponents = new List<MapComponent>();
             _mapWidth = mapWidth;
+            _mapHeight = mapHeight;
         }
 
         public void AddComponent(GameTile tile, int genMin, int genMax, double chance)
@@ -30,9 +32,9 @@ namespace ResourcesMiner
             {
                 for (int i = 0; i < _mapWidth; i++)
                 {
-                    for (int j = 0; j < _mapWidth; j++)
+                    for (int j = 0; j < _mapHeight; j++)
                     {
-                        if (i == 0 || i == _mapWidth - 1 || j == _mapWidth - 1)
+                        if (i == 0 || i == _mapWidth - 1 || j == _mapHeight - 1)
                         {
                             map[i, j] = new GameTile(14);
                         }
