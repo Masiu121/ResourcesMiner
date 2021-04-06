@@ -168,17 +168,23 @@ namespace ResourcesMiner
 
             if (Keyboard.GetState().IsKeyDown(Keys.R))
             {
-                if (SpendMoney(100))
+                if (_health != _healthMax)
                 {
-                    _healthRegen = true;
+                    if (SpendMoney(100))
+                    {
+                        _healthRegen = true;
+                    }
                 }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.T))
             {
-                if (SpendMoney(100))
+                if (_fuel != _fuelMax)
                 {
-                    _fuelRefilling = true;
+                    if (SpendMoney(100))
+                    {
+                        _fuelRefilling = true;
+                    }
                 }
             }
 
