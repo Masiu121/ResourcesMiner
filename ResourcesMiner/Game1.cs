@@ -184,7 +184,13 @@ namespace ResourcesMiner
 
             if (Keyboard.GetState().IsKeyDown(Keys.Y))
             {
-                
+                _money += _inventory._inventory[5].Count * 100;
+                _money += _inventory._inventory[7].Count * 150;
+                _money += _inventory._inventory[8].Count * 200;
+                _money += _inventory._inventory[9].Count * 300;
+                _money += _inventory._inventory[11].Count * 500;
+                _money += _inventory._inventory[12].Count * 600;
+                _inventory.SellEverything();
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.H))
@@ -204,6 +210,7 @@ namespace ResourcesMiner
                 Debug.WriteLine("Fuel: " + _fuel);
                 Debug.WriteLine("Health: " + _health);
                 Debug.WriteLine("Heat: " + _heatPercent);
+                Debug.WriteLine("Money: " + _money);
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.E))
