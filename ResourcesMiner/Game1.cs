@@ -176,7 +176,10 @@ namespace ResourcesMiner
 
             if (Keyboard.GetState().IsKeyDown(Keys.T))
             {
-                
+                if (SpendMoney(100))
+                {
+                    _fuelRefilling = true;
+                }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Y))
