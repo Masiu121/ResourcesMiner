@@ -168,7 +168,10 @@ namespace ResourcesMiner
 
             if (Keyboard.GetState().IsKeyDown(Keys.R))
             {
-                
+                if (SpendMoney(100))
+                {
+                    _healthRegen = true;
+                }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.T))
