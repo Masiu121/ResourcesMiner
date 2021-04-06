@@ -202,7 +202,8 @@ namespace ResourcesMiner
             if (Keyboard.GetState().IsKeyDown(Keys.H))
             {
                 Debug.WriteLine("------------------------------------------");
-                Debug.WriteLine("Move: WSAD");
+                Debug.WriteLine("Move: Arrows");
+                Debug.WriteLine("Equipment: E");
                 Debug.WriteLine("Properties: Q");
                 Debug.WriteLine("Repair: R");
                 Debug.WriteLine("Refuel: T");
