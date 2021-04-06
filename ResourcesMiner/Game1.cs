@@ -166,6 +166,31 @@ namespace ResourcesMiner
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            if (Keyboard.GetState().IsKeyDown(Keys.R))
+            {
+                
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.T))
+            {
+                
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Y))
+            {
+                
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.H))
+            {
+                Debug.WriteLine("------------------------------------------");
+                Debug.WriteLine("Move: WSAD");
+                Debug.WriteLine("Properties: Q");
+                Debug.WriteLine("Repair: R");
+                Debug.WriteLine("Refuel: T");
+                Debug.WriteLine("Sell all: Y");
+            }
+
             if (Keyboard.GetState().IsKeyDown(Keys.Q))
             {
                 Debug.WriteLine("------------------------------------------");
